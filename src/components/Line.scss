@@ -1,0 +1,22 @@
+.Line {
+  &-station {
+    z-index: 2;
+    display: flex;
+    align-items: center;
+  }
+  &-line {
+    background-color: var(--color);
+    margin: -19px 10px;
+    min-height: 40px;
+    width: 6px;
+    border-radius: 100px;
+  }
+  &-dot {
+    width: 8px;
+    height: 8px;
+    margin: 7px;
+    background: white;
+    border: 2px solid black;
+    border-radius: 100%;
+  }
+}
