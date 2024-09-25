@@ -4,16 +4,27 @@ export type Circular = "cw" | "ccw" | "";
 export type Pos = [number, number];
 
 export interface Station {
+  /** station index */
   index: ID;
+  /** station dimension */
   dim: string;
+  /** station position */
   pos: Pos;
+  /** station color */
   color: string;
+  /** station zone */
   zone: number;
+  /** station connections */
   connections: Array<ID>;
+  /** station platforms */
   platforms: Array<ID>;
+  /** station platforms */
   routes: Array<ID>;
+  /** station platforms */
   id: string;
+  /** station platforms */
   name: string[];
+  /** station search platforms */
   pattern: string;
 }
 

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useData } from "../context/data.ctx";
+import { useData } from "../contexts/data.ctx";
 import RouteDetail from "../components/RouteDetail";
 
 export default function RoutePage() {

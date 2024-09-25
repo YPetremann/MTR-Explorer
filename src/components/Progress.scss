@@ -7,6 +7,11 @@
   display: flex;
   padding: 2px;
   gap: 3px;
+  transition: opacity 0.5s;
+  opacity: 1;
+  &--hide {
+    opacity: 0;
+  }
   &__bar {
     --fg: #b00;
     --bg: silver;
@@ -16,6 +21,8 @@
     max-width: 100vw;
     height: 5px;
     flex-grow: var(--size);
+    background: var(--bg);
+    color: var(--fg);
     &::-moz-progress-bar {
       background: var(--fg);
     }
@@ -25,7 +32,5 @@
     &::-webkit-progress-bar {
       background-color: var(--bg);
     }
-    background: var(--bg);
-    color: var(--fg);
   }
 }

@@ -1,8 +1,7 @@
 import { InlineIcon } from "@iconify/react/dist/iconify.js";
 import { Line } from "./Line";
-import { stringify } from "../utils/stringify";
 import Lang from "./Lang";
-import { useData } from "../context/data.ctx";
+import { useData } from "../contexts/data.ctx";
 
 export default function RouteDetail({ route }: { route: Route }) {
   const data = useData();

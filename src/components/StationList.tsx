@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useData } from "../context/data.ctx";
+import { useData } from "../contexts/data.ctx";
 import { lang } from "./Lang";
 
 export function StationList() {

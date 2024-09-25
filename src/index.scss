@@ -1,5 +1,11 @@
 :root {
   font-size: 16px;
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 @import "./styles/flex.scss";
 .invisible {
@@ -23,9 +29,11 @@ a {
   }
 }
 .columns {
-  columns: 2 16rem;
+  columns: auto 20rem;
 }
-
+.break {
+  word-break: break-word;
+}
 section {
   margin: 5px;
   padding: 5px;

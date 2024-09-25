@@ -5,12 +5,11 @@ export default function LayoutPage() {
   return (
     <>
       <header className="Header">
-        MTR Helper
+        MTR:Helper
         <Link to="/search">Search</Link>
         <Link to="/routes">Routes</Link>
         <Link to="/stations">Stations</Link>
         <Link to="/debug">Debug</Link>
-        <Link to="/config">Config</Link>
       </header>
       <Outlet />
     </>

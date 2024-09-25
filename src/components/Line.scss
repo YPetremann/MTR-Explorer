@@ -10,6 +10,9 @@
     min-height: 40px;
     width: 6px;
     border-radius: 100px;
+    &:last-child {
+      display: none;
+    }
   }
   &-dot {
     width: 8px;

@@ -1,11 +1,9 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
-import Column from "./Column";
-import Row from "./Row";
 import { SimpleSelect } from "react-selectize";
-import { useData } from "../context/data.ctx";
+import { useData } from "../contexts/data.ctx";
 import { lang } from "./Lang";
-
+import SearchSelect from "./SearchSelect";
 export function Form({
   route,
   onSubmit,
@@ -13,7 +11,8 @@ export function Form({
   onSubmit: (from: string, dest: string) => void;
 }) {
   const [points, setPoints] = useState(route);
-  const [mode, setMode] = useState("lines");
+  const [mode, setMode] = useState("distance");
+
   const setPoint = (i, value) => setPoints(points.toSpliced(i, 1, value));
   const delPoint = (i) => setPoints(points.toSpliced(i, 1));
   const addPoint = (i) => setPoints(points.toSpliced(i, 0, ""));
@@ -29,16 +28,20 @@ export function Form({
       infos.push(`${station.platforms.length} platforms`);
     if (station.connections.length > 0)
       infos.push(`${station.connections.length} platforms`);
-    return { value: station.id, label: lang(station.name) };
+    return {
+      value: station.id,
+      label: lang(station.name),
+      pattern: station.pattern,
+    };
   });
   const last = points.length - 1;
   return (
-    <Row>
-      <Column className="grow">
-        <Row>
-          <Column className="grow">
+    <div className="flex row">
+      <div className="flex column grow">
+        <div className="flex row">
+          <div className="flex column grow">
             {points.map((point, i) => (
-              <Row key={i}>
+              <div className="flex row" key={i}>
                 <label className="flex row middle grow">
                   <Icon
                     icon={
@@ -50,14 +53,12 @@ export function Form({
                     }
                     rotate="1"
                   />
-                  <SimpleSelect
-                    options={options}
+                  <SearchSelect
                     className="grow"
-                    placeholder="Select a station"
-                    theme="minimal"
-                    value={options.find((o) => o.value === point)}
-                    onValueChange={({ value }) => setPoint(i, value)}
-                  ></SimpleSelect>
+                    options={options}
+                    value={options.find(({ value }) => value === point)}
+                    onChange={({ value }) => setPoint(i, value)}
+                  />
                 </label>
                 <button
                   className={i === 0 ? "invisible" : ""}
@@ -84,11 +85,11 @@ export function Form({
                     <Icon icon="mdi:plus" />
                   </button>
                 }
-              </Row>
+              </div>
             ))}
-          </Column>
-        </Row>
-        <Row>
+          </div>
+        </div>
+        <div className="flex row">
           <label className="flex row middle grow">
             <Icon icon="mdi:tune-variant" />
             <select
@@ -96,7 +97,7 @@ export function Form({
               value={mode}
               onChange={(e) => setMode(e.target.value)}
             >
-              <option value="lines">prefer minimal lines</option>
+              <option value="routes">prefer minimal routes</option>
               <option value="distance">prefer minimal distance</option>
               <option value="duration">prefer minimal duration</option>
             </select>
@@ -107,8 +108,8 @@ export function Form({
           <button onClick={submit}>
             <Icon icon="mdi:search" />
           </button>
-        </Row>
-      </Column>
-    </Row>
+        </div>
+      </div>
+    </div>
   );
 }

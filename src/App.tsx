@@ -1,23 +1,32 @@
 import "./App.scss";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
-import LayoutPage from "./pages/LayoutPage";
-import ErrorPage from "./pages/ErrorPage";
-import TravelPage from "./pages/TravelPage";
-import RoutesPage from "./pages/RoutesPage";
-import RoutePage from "./pages/RoutePage";
-import StationsPage from "./pages/StationsPage";
-import StationPage from "./pages/StationPage";
-import ConfigPage from "./pages/ConfigPage";
+import LayoutPage from "./views/LayoutPage";
+import ErrorPage from "./views/ErrorPage";
+import TravelPage from "./views/TravelPage";
+import RoutesPage from "./views/RoutesPage";
+import RoutePage from "./views/RoutePage";
+import StationsPage from "./views/StationsPage";
+import StationPage from "./views/StationPage";
+import ConfigPage from "./views/ConfigPage";
 import { StationList } from "./components/StationList";
-import { useData } from "./context/data.ctx";
-import DebugPage from "./pages/DebugPage";
+import { useData } from "./contexts/data.ctx";
+import DebugPage from "./views/DebugPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LayoutPage />,
     children: [
+      {
+        // default path, redirect to search
+        path: "/",
+        element: <Navigate to="/search" replace={true} />,
+      },
       {
         path: "search",
         element: <TravelPage />,

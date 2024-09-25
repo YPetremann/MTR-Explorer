@@ -1,6 +1,6 @@
 import React from "react";
 import YAML from "yaml";
-import { useData } from "../context/data.ctx";
+import { useData } from "../contexts/data.ctx";
 import { SimpleSelect } from "react-selectize";
 
 export default function DebugPage() {

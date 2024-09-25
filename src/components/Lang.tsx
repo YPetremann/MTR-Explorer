@@ -1,5 +1,3 @@
-import { useConfig } from "../context/config";
-
 const prefered = 1;
 export function lang(text) {
   if (text === undefined) return "";
