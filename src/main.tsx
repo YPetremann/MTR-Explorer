@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { enableCache } from "@iconify/react";
-import "react-selectize/themes/index.css";
 
 import { DataProvider } from "./contexts/data.ctx.tsx";
 import App from "./App.tsx";

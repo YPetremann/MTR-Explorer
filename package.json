@@ -16,7 +16,6 @@
     "react-dom": "^18.3.1",
     "react-konva": "^18.2.10",
     "react-router-dom": "^6.26.2",
-    "react-selectize": "^3.0.1",
     "stats.js": "^0.17.0",
     "yaml": "^2.5.1"
   },
