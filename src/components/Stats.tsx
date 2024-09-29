@@ -7,23 +7,23 @@ export default function Stats() {
     const ct = container.current;
     if (!ct) return;
 
-    var stats0 = new Stat();
+    const stats0 = new Stat();
     stats0.showPanel(0);
     stats0.dom.style.cssText = "pointer-events: none;";
     ct.appendChild(stats0.dom);
 
-    var stats1 = new Stat();
+    const stats1 = new Stat();
     stats1.showPanel(1);
     stats1.dom.style.cssText = "pointer-events: none;";
     ct.appendChild(stats1.dom);
 
-    var stats2 = new Stat();
+    const stats2 = new Stat();
     stats2.showPanel(2);
     stats2.dom.style.cssText = "pointer-events: none;";
     ct.appendChild(stats2.dom);
 
-    var stats3 = new Stat();
-    var xPanel = stats3.addPanel(new Stat.Panel("x", "#ff8", "#221"));
+    const stats3 = new Stat();
+    const xPanel = stats3.addPanel(new Stat.Panel("x", "#ff8", "#221"));
     stats3.showPanel(3);
     stats3.dom.style.cssText = "pointer-events: none;";
     ct.appendChild(stats3.dom);

@@ -1,10 +1,8 @@
 import React from "react";
 import { useData } from "../contexts/data.ctx";
-import { Station } from "../components/StationDetail";
-import { Icon, InlineIcon } from "@iconify/react/dist/iconify.js";
-import { Link } from "react-router-dom";
-import Lang from "../components/Lang";
 import StationLink from "../components/StationLink";
+import Header from "../components/Header";
+import Main from "../components/Main";
 
 export default function StationsPage() {
   const [filter, setFilter] = React.useState("");
@@ -13,25 +11,23 @@ export default function StationsPage() {
 
   return (
     <>
-      <div>
-        <label>
-          filter:{" "}
-          <input
-            type="search"
-            value={filter}
-            onChange={(ev) => setFilter(ev.target.value)}
-          />
-        </label>
-      </div>
-      <div className="columns">
+      <Header name="Stations">
+        <input
+          type="search"
+          placeholder="Filter stations"
+          value={filter}
+          onChange={(ev) => setFilter(ev.target.value)}
+        />
+      </Header>
+      <Main>
         {data.stations
           .filter((station) => station.pattern.includes(lf))
-          .map((station: any, i: number) => (
-            <div key={i}>
+          .map((station) => (
+            <div key={station.index}>
               <StationLink station={station} />
             </div>
           ))}
-      </div>
+      </Main>
     </>
   );
 }

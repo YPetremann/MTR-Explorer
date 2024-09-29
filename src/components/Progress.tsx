@@ -1,7 +1,7 @@
 import { useAnimatedValue } from "../hooks/useAnimatedValue";
 import "./Progress.scss";
 
-export default function Progress({ message, mode, value, size }) {
+export default function Progress({ message, value, size }) {
   const tweened = useAnimatedValue(0, value, 5);
   return (
     <div

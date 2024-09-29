@@ -1,5 +1,12 @@
 .flex {
   display: flex;
+}
+.inline-flex {
+  display: inline-flex;
+}
+.flex,
+.inline-flex {
+  display: flex;
   &.column {
     flex-direction: column;
   }

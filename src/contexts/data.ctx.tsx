@@ -1,13 +1,12 @@
 import React from "react";
-import processData, { Data } from "../../definitions/worker";
+import { Data } from "../../definitions/worker";
 import * as Comlink from "comlink";
-import { StationList } from "../components/StationList";
 import Progress from "../components/Progress";
 import dataWorker from "../worker/data";
 
 export const DataContext = React.createContext({});
 
-export function useData(key: string, def: any): Data {
+export function useData(): Data {
   return React.useContext(DataContext);
 }
 
@@ -18,7 +17,7 @@ export function usePathFinding() {
 export function DataProvider({ children, source }) {
   const [loading, setLoading] = React.useState([0, "Loading"]);
   const [progress, message] = loading;
-  const [data, setData] = React.useState<any>({
+  const [data, setData] = React.useState<Data>({
     stations: [],
     routes: [],
     platforms: [],
@@ -32,7 +31,7 @@ export function DataProvider({ children, source }) {
         .then((data) => setData(data));
     }, 10);
     return () => clearTimeout(t);
-  }, []);
+  }, [source]);
 
   return (
     <DataContext.Provider value={data}>

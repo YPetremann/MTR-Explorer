@@ -1,77 +1,106 @@
 import React from "react";
-import YAML from "yaml";
-import { useData, usePathFinding } from "../contexts/data.ctx";
+import { useData } from "../contexts/data.ctx";
 import dataWorker from "../worker/data";
-import { calcPath } from "../worker/data.worker";
-import NetworkMap from "./NetworkMap";
-import { lang } from "./Lang";
-import StationLink from "./StationLink";
 import RouteLink from "./RouteLink";
 import DotStation from "./DotStation";
+import Time from "./Time";
+import "./Travel.scss";
 
-export default function Travel({ points, mode }) {
+/** Get the ordinal version for a number
+ * @param {number} n
+ * @returns {string}
+ * @example
+ * ordinal(1) // "1st"
+ * ordinal(2) // "2nd"
+ * ordinal(3) // "3rd"
+ * ordinal(4) // "4th"
+ * ordinal(11) // "11th"
+ * ordinal(12) // "12th"
+ * ordinal(13) // "13th"
+ * ordinal(21) // "21st"
+ * ordinal(22) // "22nd"
+ * ordinal(23) // "23rd"
+ * ordinal(24) // "24th"
+ * ordinal(101) // "101st"
+ */
+function ordinal(n) {
+  if (n % 100 > 10 && n % 100 < 14) return n + "th";
+  if (n % 10 === 1) return n + "st";
+  if (n % 10 === 2) return n + "nd";
+  if (n % 10 === 3) return n + "rd";
+  return n + "th";
+}
+
+export default function Travel({ points, algo }) {
   const data = useData();
-  const pathfind = usePathFinding();
   const [result, setResult] = React.useState(null);
-  const [state, setState] = React.useState("prepare");
-
-  function calcPath() {
-    if (!data.stations.length) return;
-    if (!mode && !points) return;
-    if (points.filter((e) => e).length < 2) return;
-    setResult();
-    dataWorker.calcPath(points, mode).then(setResult);
-  }
+  const [advanced, setAdvanced] = React.useState(false);
 
   React.useEffect(() => {
-    calcPath();
-  }, [data, points, mode]);
+    function calcPath() {
+      if (!data.stations.length) return;
+      if (!algo && !points) return;
+      if (points.filter((e) => e).length < 2) return;
+      setResult();
+      dataWorker.calcPath(points, algo).then(setResult);
+    }
 
-  if (!points || !mode) {
-    return (
-      <div>
-        <h2>Fill</h2>
-      </div>
-    );
-  }
-  if (!result) {
-    return (
-      <div>
-        <h2>Loading</h2>
-        <NetworkMap />
-      </div>
-    );
-  }
+    calcPath();
+  }, [data, points, algo]);
+
+  if (!result) return;
   return (
     <div>
-      <h2>Result</h2>
-      <pre>{YAML.stringify(data.platforms)}</pre>
-      <pre>{YAML.stringify(result)}</pre>
-      {/*
+      <label>
+        <input
+          type="checkbox"
+          checked={advanced}
+          onChange={() => setAdvanced((e) => !e)}
+        />{" "}
+        Show details
+      </label>
       <div>
-        {result.map((sg, i) => {
-          const routes = sg.routes
-            .map((e) => data.routes[e] ?? { name: ["walk"] })
-            .map((rt) => lang(rt.name) + " - " + lang(rt.direction));
-          return (
-            <div key={sg.index}>
-              {i === 0 && <DotStation major index={sg.from} />}
-              <div style={{ marginLeft: "20px" }}>
-                {sg.routes.map((index) => (
-                  <div key={index}>
-                    <RouteLink index={index} />
-                  </div>
-                ))}
-                <div>Stations: {sg.num_stations}</div>
-              </div>
-              <DotStation minor index={sg.to} />
-              <DotStation index={sg.to} />
-              <DotStation major index={sg.to} />
-            </div>
-          );
-        })}
+        {result.map((part, i) => (
+          <div key={i} style={{ margin: "20px 0" }}>
+            {part.map((seg, j) => {
+              const prev = part[j - 1];
+              const route = data.routes[seg.route.index];
+              return (
+                <div key={j}>
+                  {j === 0 && <DotStation major index={seg.from.index} />}
+                  {j > 0 &&
+                    (advanced || j < part.length - 1) &&
+                    seg.route.index !== -2 &&
+                    seg.from.index !== prev.from.index && (
+                      <DotStation
+                        index={data.platforms[seg.from.index].station}
+                      />
+                    )}
+
+                  {(advanced || seg.route.index >= 0) && (
+                    <div
+                      className={`Line Line--${seg.route.type}`}
+                      style={{ "--color": route?.color }}
+                    >
+                      <RouteLink index={seg.route.index} />{" "}
+                      {advanced && <Time ticks={seg.duration} />}
+                      {advanced && !!seg.station && (
+                        <>
+                          <br />
+                          {ordinal(seg.station)} station
+                        </>
+                      )}
+                    </div>
+                  )}
+                  {j === part.length - 1 && (
+                    <DotStation major index={seg.to.index} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ))}
       </div>
-          */}
     </div>
   );
 }

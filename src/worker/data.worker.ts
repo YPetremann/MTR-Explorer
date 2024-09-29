@@ -1,4 +1,3 @@
-import { pl } from "@faker-js/faker";
 import type {
   Data,
   Platform,
@@ -65,17 +64,17 @@ const routeAttrs = [
 ];
 const segmentAttrs = [
   "index",
+  "route",
   "from",
   "to",
   "distance",
+  "duration",
   "prev",
   "next",
-  "routes",
-  "alt",
 ];
 const lang_prefered = 1;
-const walkSpeed = 4.137; // bloc/s
-
+const walkSpeed = 4.137 / 20; // bloc/tick
+const waitDelay = 20 * 90; // 60 seconds
 //MARK:- UTILS
 function toColor(n) {
   return "#" + n.toString(16).padStart(6, "0");
@@ -89,10 +88,7 @@ export function locale(text) {
   return txt;
 }
 
-function getStationIndex(id: string): any {
-  return indexes.stations.get(id);
-}
-function getPlatformIndex(id: string): any {
+function getPlatformIndex(id: string) {
   return indexes.platforms.get(id);
 }
 //MARK:- LOAD
@@ -135,8 +131,7 @@ export async function load(source, progressCb = () => {}) {
   createPlatformSegments(data, segmentMap);
   createStationSegments(data, segmentMap);
   linkSegmentToThings(data, segmentMap);
-  calculateSegmentDistance(data);
-  linkSegments(data.segments);
+  linkSegmentsTogether(data.segments);
 
   progressCb([1.8, "Beautification..."]);
   reorderAttributes(data.stations, stationAttrs);
@@ -150,12 +145,11 @@ export async function load(source, progressCb = () => {}) {
 
   console.timeEnd("processing");
 }
-async function getDimensionsFromSource(source: any) {
+async function getDimensionsFromSource(source) {
   try {
     source = new URL(source);
-  } catch (e) {
-    source = source;
-    console.warn("source is not an URL");
+  } catch (err) {
+    console.warn(err.message);
   }
   if (source instanceof URL) {
     const res = await fetch(source.href);
@@ -184,29 +178,32 @@ function transformStations(stations, dim_id: string) {
     delete station.z;
   }
 }
-function transformRoutes(routes: any, dim_id: string) {
+function transformRoutes(routes, dim_id: string) {
   for (const id in routes) {
     const route = routes[id];
     route.id = "" + route.color;
     route.dim = dim_id;
     route.pattern = route.name.toLowerCase();
     const [name = "", direction = ""] = route.name.split("||");
+    route.number = route.number.split("|");
     route.name = name.split("|");
     route.direction = direction.split("|");
     route.color = toColor(route.color);
   }
 }
-function transformPlatforms(platforms: any, dim_id: string) {
+function transformPlatforms(platforms, dim_id: string) {
   for (const id in platforms) {
     const platform = platforms[id];
-    const [station_id, route_id] = id.split("_");
+    const [station_id] = id.split("_");
     platform.id = id;
     platform.dim = dim_id;
     platform.routes = [];
+    platform.next = [];
+    platform.prev = [];
+    platform.station = station_id;
     platform.pos = { x: platform.x, z: platform.y };
     delete platform.x;
     delete platform.y;
-    platform.station = station_id;
   }
 }
 function byLocaleName(a, b) {
@@ -282,31 +279,45 @@ function updateStationPlatforms(data: Data) {
     st.platforms.push(pl.index);
   }
 }
-function createRouteSegments(data: Data, segmentMap: Map<string, Segment>) {
+function createRouteSegments(data: Data) {
   for (const route of data.routes) {
     for (const index in route.platforms) {
       if (index == 0) continue;
       const fromPlatform = data.platforms[route.platforms[index - 1]];
       const toPlatform = data.platforms[route.platforms[index]];
+      const distance = Math.hypot(
+        fromPlatform.pos.x - toPlatform.pos.x,
+        fromPlatform.pos.z - toPlatform.pos.z
+      );
+      const duration = route.durations[index - 1] || distance / walkSpeed;
       data.segments.push({
         index: data.segments.length,
         route: { type: route.type, index: route.index },
         from: { type: "platform", index: fromPlatform.index },
         to: { type: "platform", index: toPlatform.index },
+        distance: Math.ceil(distance),
+        duration: Math.ceil(duration),
         prev: [],
         next: [],
       });
     }
   }
 }
-function createPlatformSegments(data: Data, segmentMap: Map<string, Segment>) {
+function createPlatformSegments(data: Data) {
   for (const platform of data.platforms) {
     const station = data.stations[platform.station];
+    const distance = Math.hypot(
+      platform.pos.x - station.pos.x,
+      platform.pos.z - station.pos.z
+    );
+    const duration = (distance * 2) / walkSpeed;
     data.segments.push({
       index: data.segments.length,
       route: { type: "walk", index: -1 },
       from: { type: "platform", index: platform.index },
       to: { type: "station", index: station.index },
+      distance: Math.ceil(distance),
+      duration: Math.ceil(duration),
       prev: [],
       next: [],
     });
@@ -315,21 +326,32 @@ function createPlatformSegments(data: Data, segmentMap: Map<string, Segment>) {
       route: { type: "walk", index: -1 },
       from: { type: "station", index: station.index },
       to: { type: "platform", index: platform.index },
+      distance: Math.ceil(distance),
+      duration: Math.ceil(duration),
+      wait: waitDelay,
       prev: [],
       next: [],
     });
   }
 }
-function createStationSegments(data: Data, segmentMap: Map<string, Segment>) {
+function createStationSegments(data: Data) {
   for (const fromStation of data.stations) {
     for (const id of fromStation.connections) {
       const toStation = data.stations[id];
       if (!toStation) return;
+      const distance = Math.hypot(
+        fromStation.pos.x - toStation.pos.x,
+        fromStation.pos.z - toStation.pos.z
+      );
+      const duration = (distance / walkSpeed) * 2;
+
       data.segments.push({
         index: data.segments.length,
         route: { type: "walk", index: -1 },
-        from: { type: "station", station: fromStation.index },
-        to: { type: "station", station: toStation.index },
+        from: { type: "station", index: fromStation.index },
+        to: { type: "station", index: toStation.index },
+        distance: Math.ceil(distance),
+        duration: Math.ceil(duration),
         prev: [],
         next: [],
       });
@@ -341,43 +363,32 @@ function getThing(obj, type) {
   const index = typeof obj === "object" ? obj.index : obj;
   switch (type) {
     case "route":
-      return workerData.routes[obj];
+      return workerData.routes[index];
     case "platform":
-      return workerData.platforms[obj];
+      return workerData.platforms[index];
     case "station":
-      return workerData.stations[obj];
+      return workerData.stations[index];
     case "segment":
-      return workerData.segments[obj];
+      return workerData.segments[index];
   }
 }
 function linkSegmentToThings(data: Data) {
   data.segments.forEach((segment) => {
-    const from = getThing(segment.from);
-    from.next.push(segment.index);
-    const to = getThing(segment.to);
-    to.prev.push(segment.index);
+    getThing(segment.from).next.push(segment.index);
+    getThing(segment.to).prev.push(segment.index);
   });
 }
-function linkSegments(segments: Segment[]) {
-  segments.forEach((sgA) => {
-    segments.forEach((sgB) => {
-      if (sgA.from !== sgB.to) return;
-      //if (sgB.from === sgA.to) return;
-      sgA.prev.push(sgB.index);
-      sgB.next.push(sgA.index);
-    });
-  });
+function linkSegmentsTogether() {
+  for (const segment of workerData.segments) {
+    const index = segment.index;
+    const prev = getThing(segment.from).prev;
+    const next = getThing(segment.to).next;
+    segment.prev = prev.filter((id) => id !== index);
+    segment.next = next.filter((id) => id !== index);
+  }
 }
-function calculateSegmentDistance(data: Data) {
-  data.segments.forEach((sg, i) => {
-    const from = data.platforms[sg.from].pos;
-    const to = data.platforms[sg.to].pos;
-    const dx = from.x - to.x;
-    const dz = from.z - to.z;
-    sg.distance = Math.ceil(Math.hypot(dx, dz));
-  });
-}
-function reorderAttributes(objs: any, attrs: string[]) {
+
+function reorderAttributes(objs, attrs: string[]) {
   objs.forEach(function (entry, index, array) {
     const n = {};
     for (const key of attrs)
@@ -399,11 +410,29 @@ export function getData() {
 
 //MARK:- PATH
 type Mode = "routes" | "distance" | "duration";
-const getStationIndexFromId = (id: string): number =>
-  workerData.stations.findIndex((st) => st.id === id);
+type Calc = {
+  wait: number;
+  prev: number;
+  next: number;
+  prev_score: number;
+  next_score: number;
+};
+
+const Scoring = {
+  duration: (calc, segment) => calc.prev_score + segment.duration + calc.wait,
+  distance: (calc, segment) => calc.prev_score + segment.distance,
+  routes: (calc, segment) => {
+    const prev = getThing(calc.prev, "segment");
+    const routeCur = segment.route.index;
+    const routePrev = prev?.route?.index ?? -1;
+    const increment = routeCur < 0 || routeCur !== routePrev ? 1 : 0;
+    return calc.prev_score + increment;
+  },
+  uniform: (calc) => calc.prev_score + 1,
+};
 /**
  * Pathfinding algorithm to find the shortest path going through every stations.
- * @param stations List of stations to go through.
+ * @param nodes List of stations to go through.
  * @param mode Mode of the pathfinding algorithm.
  * - "routes": Minimize the number of routes to go through.
  * - "distance": Minimize the distance to go through.
@@ -411,38 +440,33 @@ const getStationIndexFromId = (id: string): number =>
  * @returns List of segments to go through.
  *
  */
-export function calcPath(stations: string[], mode: Mode = "distance") {
+export function calcPath(nodes: string[], mode: Mode = "distance") {
   console.time("calcPath");
-  const nodes = stations.map(getStationIndexFromId);
+  const stations = workerData.stations;
+  nodes = nodes.map((id) => stations.findIndex((st) => st.id === id));
   const parts = nodes.slice(1).map((t, i) => [nodes[i], t]);
-  let list = [];
-  if (mode === "routes") list = parts.map(([f, t]) => calcPathRoutes(f, t));
-  if (mode === "distance") list = parts.map(([f, t]) => calcPathDistance(f, t));
-  if (mode === "duration") list = parts.map(([f, t]) => calcPathDuration(f, t));
-  list = beautifyPath(list);
+  const scoring = Scoring[mode] ?? Scoring.uniform;
+  const list = parts.map(([f, t]) => calcPathGen(f, t, scoring));
   console.timeEnd("calcPath");
-  return list;
+  return beautifyPath(list);
 }
 function resetCalcScore() {
   const expectedLen = workerData.segments.length;
   if (calcs.length > expectedLen) calcs.length = expectedLen;
   for (let i = 0; i < expectedLen; i++) {
     const calc = (calcs[i] = calcs[i] ?? {});
+    calc.wait = 0;
     calc.prev = Infinity;
     calc.next = Infinity;
     calc.prev_score = Infinity;
     calc.next_score = Infinity;
   }
 }
-/**
- * Pathfinding algorithm to find the shortest path going through every stations.
- * it minimizes the number of routes to go through.
- */
-function calcPathRoutes(stations: string[]) {
-  console.log("calcPathRoutes", from, to);
-  return [];
-}
-function calcPathDistance(from, to) {
+function calcPathGen(
+  from,
+  to,
+  scoring: (calc: Calc, segment: Segment) => number
+) {
   const st_from = workerData.stations[from];
   const st_to = workerData.stations[to];
   resetCalcScore();
@@ -456,13 +480,12 @@ function calcPathDistance(from, to) {
   }
 
   //walking through the network
-  let iter = 0;
   for (const seg_id of segments) {
-    iter++;
     const segment = workerData.segments[seg_id];
     const calc = calcs[seg_id];
     // get previous segment score
-    calc.next_score = calc.prev_score + segment.distance;
+    calc.wait = segment.wait ?? 0;
+    calc.next_score = scoring(calc, segment);
     // scan next segments
     for (const next_id of segment.next) {
       const calc_next = calcs[next_id];
@@ -474,36 +497,72 @@ function calcPathDistance(from, to) {
     }
     segments.delete(seg_id);
   }
-  console.log("iterations", iter);
-  const list = [];
+
+  // travel back from destination to origin
   let prev = st_to.prev
     .toSorted((a, b) => calcs[a].next_score - calcs[b].next_score)
     .at(0);
-  let chain = [];
-  let chain_routes = [];
+  const chain = [];
   while (prev !== -1) {
     const seg = structuredClone(workerData.segments[prev]);
+    if (seg.wait) {
+      // add a wait segment
+      const wait = {
+        ...seg,
+        route: { type: "wait", index: -2 },
+        from: seg.to,
+        to: seg.to,
+        distance: 0,
+        duration: calcs[prev].wait,
+      };
+      delete wait.index;
+      delete wait.prev;
+      delete wait.next;
+      chain.push(wait);
+    }
+    delete seg.index;
     delete seg.prev;
     delete seg.next;
-    list.push(seg);
+    chain.push(seg);
     prev = calcs[prev].prev;
   }
-  list.reverse();
-  return list;
+  chain.reverse();
+  return chain;
 }
-function beautifyPath(parts) {
+
+/**
+ * Pathfinding algorithm to find the shortest path going through every stations.
+ * it minimizes the number of routes to go through.
+ */
+
+type Part = PathSegment[];
+interface PathSegment {
+  route: { type: string; index: number };
+  from: { type: string; index: number };
+  to: { type: string; index: number };
+  distance: number;
+  duration: number;
+}
+function beautifyPath(parts: Part[]) {
   for (const part of parts) {
-    for (const seg of part) {
-      seg.from = locale(workerData.stations[seg.from].name);
-      seg.to = locale(workerData.stations[seg.to].name);
+    // add station counter
+    for (const seg of part) seg.station = seg.route.index < 0 ? 0 : 1;
+
+    // merge segments where route have same index
+    //*
+    for (let i = 0; i < part.length - 1; i++) {
+      const seg = part[i];
+      const next = part[i + 1];
+      if (seg.route.index === next.route.index) {
+        seg.to = next.to;
+        seg.station += next.station;
+        seg.distance += next.distance;
+        seg.duration += next.duration;
+        part.splice(i + 1, 1);
+        i--;
+      }
     }
+    //*/
   }
-  return parts.flat();
-}
-function calcPathDuration(stations: string[]) {
-  console.log("calcPathDuration", from, to);
-  return [];
-}
-function intersect(a, b) {
-  return a.filter((e) => b.includes(e));
+  return parts;
 }

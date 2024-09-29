@@ -5,7 +5,6 @@ const moreOptions = { value: "...", label: "..." };
 
 export default function SearchSelect({ options, value, onChange, className }) {
   const [search, setSearch] = useState();
-  const [searchFocus, setSearchFocus] = useState(false);
   const [selectFocus, setSelectFocus] = useState(false);
   const [more, setMore] = useState(false);
   const ls = search?.toLowerCase();
@@ -17,22 +16,20 @@ export default function SearchSelect({ options, value, onChange, className }) {
     proposed.splice(10, proposed.length);
   }
   return (
-    <div className={"SearchSelect " + className}>
+    <div className={"relative " + className}>
       <input
         type="search"
-        className="SearchSelect__input"
+        className="border border-gray-900 border-solid px-3 min-w-0 w-20 grow"
         value={search ?? value?.label ?? ""}
         onChange={(ev) => {
           const value = ev.target.value;
           if (value) setSelectFocus(true);
           setSearch(ev.target.value);
         }}
-        onFocus={() => setSearchFocus(true)}
-        onBlur={() => setSearchFocus(false)}
       />
       {selectFocus && (
         <>
-          <select className="SearchSelect__select">
+          {/* <select className="SearchSelect__selectDesktop">
             {proposed.map((option) => (
               <option
                 key={option.value}
@@ -48,10 +45,11 @@ export default function SearchSelect({ options, value, onChange, className }) {
                 {option.label}
               </option>
             ))}
-          </select>
+          </select> */}
           <div className="SearchSelect__select">
             {proposed.map((option) => (
               <div
+                className="SearchSelect__option"
                 key={option.value}
                 onClick={() => {
                   const value = option.value;
