@@ -16,26 +16,31 @@ import HomePage from "./views/HomePage";
 import ConfigPage from "./views/ConfigPage";
 import MapPage from "./views/MapPage";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <LayoutPage />,
+      children: [
+        { path: "/", element: <HomePage /> },
+        { path: "travel", element: <TravelPage /> },
+        { path: "travel/:algo/*", element: <TravelPage /> },
+        { path: "map", element: <MapPage /> },
+        { path: "routes", element: <RoutesPage /> },
+        { path: "route/:route_id", element: <RoutePage /> },
+        { path: "stations", element: <StationsPage /> },
+        { path: "station/:station_id", element: <StationPage /> },
+        { path: "incidents", element: <IncidentPage /> },
+        { path: "config", element: <ConfigPage /> },
+        { path: "debug", element: <DebugPage /> },
+        { path: "*", element: <Page404 /> },
+      ],
+    },
+  ],
   {
-    path: "/",
-    element: <LayoutPage />,
-    children: [
-      { path: "/", element: <HomePage /> },
-      { path: "travel", element: <TravelPage /> },
-      { path: "travel/:algo/*", element: <TravelPage /> },
-      { path: "map", element: <MapPage /> },
-      { path: "routes", element: <RoutesPage /> },
-      { path: "route/:route_id", element: <RoutePage /> },
-      { path: "stations", element: <StationsPage /> },
-      { path: "station/:station_id", element: <StationPage /> },
-      { path: "incidents", element: <IncidentPage /> },
-      { path: "config", element: <ConfigPage /> },
-      { path: "debug", element: <DebugPage /> },
-      { path: "*", element: <Page404 /> },
-    ],
-  },
-]);
+    basename: "/MTR-Helper",
+  }
+);
 export default function App() {
   const data = useData();
   return (
