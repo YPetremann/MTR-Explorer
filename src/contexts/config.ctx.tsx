@@ -4,7 +4,7 @@ import useTheme from "../hooks/useTheme";
 import { useLocalStorage } from "@uidotdev/usehooks";
 
 const defaultProfile = {
-  currentProfile: "Local Example",
+  currentProfile: "LPS server",
   profiles: {
     "LPS server": {
       systemMap: {
