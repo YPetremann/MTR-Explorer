@@ -10,7 +10,7 @@ export default function MapPage() {
         <pre>{JSON.stringify(stations, platforms, routes, segments, zoom)}</pre>
       </Header>
       <Main>
-        <section className="flex flex-col gap-2">
+        <section className="flex flex-col gap-2 italic">
           <p>This feature will permit to see the network map.</p>
           <p>You will be able to highlight some elements:</p>
           <ul>

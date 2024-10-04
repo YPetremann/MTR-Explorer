@@ -50,5 +50,5 @@ export default function Stats() {
       stats3.dom.remove();
     };
   }, []);
-  return <div className="flex row" ref={container} />;
+  return <div className="flex row bg-black" ref={container} />;
 }

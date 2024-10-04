@@ -60,6 +60,7 @@ export default function RouteLink({ route, index }: RouteLinkProps) {
         <Icon icon={rt.icon} />
         {lang(rt.name)}
       </div>
+      {rt.number && <span className="break-words">{lang(rt.number)}</span>}
       {rt.last && (
         <span className="break-words">{`to ${lang(rt.last?.name)}`}</span>
       )}

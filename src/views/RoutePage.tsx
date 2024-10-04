@@ -2,9 +2,9 @@ import { useParams } from "react-router-dom";
 import { useData } from "../contexts/data.ctx";
 import Main from "../components/Main";
 import Header from "../components/Header";
-import { Line } from "../components/Line";
 import RouteLink from "../components/RouteLink";
 import { lang } from "../utils/lang";
+import DotStation from "../components/DotStation";
 
 export default function RoutePage() {
   const data = useData();
@@ -24,7 +24,20 @@ export default function RoutePage() {
         </div>
       </Header>
       <Main>
-        <Line color={route.color} stations={route.stations} />
+        <div className="grid">
+          <div
+            className="col-start-1 row-start-1 m-[5px] border-l-[7px]"
+            style={{ borderColor: route.color }}
+          />
+          <div className="col-start-1 row-start-1">
+            {route.stations.map((station, index, a) => (
+              <DotStation
+                index={station}
+                minor={index > 0 && index < a.length - 1}
+              />
+            ))}
+          </div>
+        </div>
       </Main>
     </>
   );

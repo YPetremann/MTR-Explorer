@@ -19,7 +19,7 @@ export default function StationLink({ station, index }: StationLinkProps) {
   if (!st) return;
   return (
     <Link
-      className="inline-flex row gap-1 items-baseline text-blue-800"
+      className="inline-flex row gap-1 items-baseline text-link-700"
       to={`/station/${st.index}`}
     >
       <Icon icon="mdi:town-hall" style={{ color: st.color }} />

@@ -3,6 +3,7 @@ import { useData } from "../contexts/data.ctx";
 import StationLink from "../components/StationLink";
 import Header from "../components/Header";
 import Main from "../components/Main";
+import Input from "../components/Input";
 
 export default function StationsPage() {
   const [filter, setFilter] = React.useState("");
@@ -12,7 +13,7 @@ export default function StationsPage() {
   return (
     <>
       <Header name="Stations">
-        <input
+        <Input
           type="search"
           placeholder="Filter stations"
           value={filter}

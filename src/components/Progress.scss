@@ -7,13 +7,17 @@
   display: flex;
   padding: 2px;
   gap: 3px;
-  transition: opacity 0.5s;
+  transition: opacity 0s;
   opacity: 1;
   &--hide {
+    transition: opacity 0.5s;
     opacity: 0;
   }
   &__bar {
-    --fg: #b00;
+    &--error {
+      --fg: #f40;
+    }
+    --fg: #40f;
     --bg: silver;
     --size: 1;
     width: 1px;

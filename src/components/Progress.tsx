@@ -1,18 +1,25 @@
 import { useAnimatedValue } from "../hooks/useAnimatedValue";
+import classnames from "../utils/classnames";
 import "./Progress.scss";
 
 export default function Progress({ message, value, size }) {
-  const tweened = useAnimatedValue(0, value, 5);
+  const tweened = useAnimatedValue(0, value, 5, 1000);
   return (
     <div
-      className={"Progress" + (tweened >= size.length ? " Progress--hide" : "")}
+      className={classnames(
+        "Progress",
+        (tweened == 0 || tweened >= size.length) && " Progress--hide"
+      )}
       title={message}
     >
       {size.map((size, i) => (
         <progress
-          className="Progress__bar"
+          className={classnames(
+            "Progress__bar",
+            value === -1 && "Progress__bar--error"
+          )}
           key={i}
-          value={tweened - i}
+          value={value >= 0 ? tweened - i : 1}
           max={1}
           style={{ "--size": size ?? 1 }}
         />

@@ -1,4 +1,3 @@
-import "./App.scss";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import LayoutPage from "./views/LayoutPage";
@@ -8,8 +7,6 @@ import RoutePage from "./views/RoutePage";
 import StationsPage from "./views/StationsPage";
 import StationPage from "./views/StationPage";
 import IncidentPage from "./views/IncidentPage";
-import { StationList } from "./components/StationList";
-import { useData } from "./contexts/data.ctx";
 import DebugPage from "./views/DebugPage";
 import Page404 from "./views/Page404";
 import HomePage from "./views/HomePage";
@@ -41,14 +38,7 @@ const router = createBrowserRouter(
     basename: "/MTR-Helper",
   }
 );
-export default function App() {
-  const data = useData();
-  return (
-    data && (
-      <>
-        <StationList />
-        <RouterProvider router={router} />
-      </>
-    )
-  );
+
+export default function Router() {
+  return <RouterProvider router={router} />;
 }

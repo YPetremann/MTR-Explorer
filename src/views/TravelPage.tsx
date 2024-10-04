@@ -1,4 +1,4 @@
-import { Form } from "../components/Form";
+import { TravelForm as Form } from "../components/TravelForm";
 import Travel from "../components/Travel";
 import Header from "../components/Header";
 import Main from "../components/Main";
@@ -30,6 +30,9 @@ export default function TravelPage() {
   return (
     <>
       <Header name="Travel">
+        <section className="flex flex-col gap-2 italic">
+          <p>Favorite paths saved in profile.</p>
+        </section>
         <Form route={points} algo={algo} onSubmit={submit} />
       </Header>
       <Main>

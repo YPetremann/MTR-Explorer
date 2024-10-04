@@ -29,6 +29,7 @@ export default function DebugPage() {
         </table>
       </Header>
       <Main>
+        {/*
         <pre>
           {YAML.stringify(data, {
             collectionStyle: "flow",
@@ -39,6 +40,7 @@ export default function DebugPage() {
             minContentWidth: 80,
           })}
         </pre>
+        */}
       </Main>
     </>
   );

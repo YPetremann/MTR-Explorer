@@ -66,7 +66,7 @@ export default function ConfigPage() {
         </form>*/}
       </Header>
       <Main>
-        <section className="flex flex-col gap-2">
+        <section className="flex flex-col gap-2 italic">
           <p>This feature will permit to declare incidents.</p>
           <p>Examples of incidents:</p>
           <ul>

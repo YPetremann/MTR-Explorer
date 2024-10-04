@@ -21,7 +21,8 @@ const indexes = {
   segments: new Map(),
 };
 const calcs = [];
-const stationAttrs = [
+
+const STATION_ATTRS = [
   "index",
   "dim",
   "pos",
@@ -34,7 +35,7 @@ const stationAttrs = [
   "name",
   "pattern",
 ];
-const platformAttrs = [
+const PLATFORM_ATTRS = [
   "index",
   "from",
   "to",
@@ -47,7 +48,7 @@ const platformAttrs = [
   "route",
   "id",
 ];
-const routeAttrs = [
+const ROUTE_ATTRS = [
   "index",
   "dim",
   "number",
@@ -62,7 +63,7 @@ const routeAttrs = [
   "name",
   "pattern",
 ];
-const segmentAttrs = [
+const SEGMENT_ATTRS = [
   "index",
   "route",
   "from",
@@ -72,19 +73,17 @@ const segmentAttrs = [
   "prev",
   "next",
 ];
-const lang_prefered = 1;
-const walkSpeed = 4.137 / 20; // bloc/tick
-const waitDelay = 20 * 90; // 60 seconds
-//MARK:- UTILS
-function toColor(n) {
-  return "#" + n.toString(16).padStart(6, "0");
-}
+const LANG_PREFERED = 1;
+const WALK_SPEED = 4.137 / 20; // bloc/tick
+const WAIT_DELAY = 20 * 90; // 60 seconds
 
+//MARK:- UTILS
+const toColor = (n) => "#" + n.toString(16).padStart(6, "0");
 export function locale(text) {
   if (text === undefined) return "";
   if (typeof text === "string") return text;
   const last = text.length - 1;
-  const txt = text[Math.min(lang_prefered, last)];
+  const txt = text[Math.min(LANG_PREFERED, last)];
   return txt;
 }
 
@@ -93,63 +92,70 @@ function getPlatformIndex(id: string) {
 }
 //MARK:- LOAD
 export async function load(source, progressCb = () => {}) {
-  console.time("fetch");
-  progressCb([0, "Fetching data..."]);
-  const dims = await getDimensionsFromSource(source);
+  try {
+    console.time("fetch");
+    progressCb([0.5, "Fetching data..."]);
+    const dims = await getDimensionsFromSource(source);
 
-  console.timeEnd("fetch");
-  console.time("processing");
+    console.timeEnd("fetch");
+    console.time("processing");
 
-  progressCb([1, "Fixing data..."]);
-  for (const dim_id in dims) {
-    const dim = dims[dim_id];
-    transformStations(dim.stations, dim_id);
-    transformRoutes(dim.routes, dim_id);
-    transformPlatforms(dim.positions, dim_id);
+    progressCb([1, "Fixing data..."]);
+    for (const dim_id in dims) {
+      const dim = dims[dim_id];
+      transformStations(dim.stations, dim_id);
+      transformRoutes(dim.routes, dim_id);
+      transformPlatforms(dim.positions, dim_id);
+    }
+
+    progressCb([1.2, "Array mutation..."]);
+    const data = populateWorkerData(dims);
+    data.stations.sort(byLocaleName);
+    data.routes.sort(byLocaleName);
+    data.stations.forEach(indexStation);
+    data.platforms.forEach(indexPlatform);
+    data.routes.forEach(indexRoute);
+
+    progressCb([1.4, "Index mutation..."]);
+    updateStationConnections(data);
+    updatePlatformStation(data);
+    updateRoutePlatforms(data);
+    updateRouteStations(data);
+    updatePlatformRoutes(data);
+    updateStationRoutes(data);
+    updateStationPlatforms(data);
+
+    progressCb([1.6, "Segments calculation..."]);
+    const segmentMap = new Map();
+    createRouteSegments(data, segmentMap);
+    createPlatformSegments(data, segmentMap);
+    createStationSegments(data, segmentMap);
+    linkSegmentToThings(data, segmentMap);
+    linkSegmentsTogether(data.segments);
+
+    progressCb([1.8, "Beautification..."]);
+    reorderAttributes(data.stations, STATION_ATTRS);
+    reorderAttributes(data.platforms, PLATFORM_ATTRS);
+    reorderAttributes(data.routes, ROUTE_ATTRS);
+    reorderAttributes(data.segments, SEGMENT_ATTRS);
+    deepFreeze(data.stations);
+    deepFreeze(data.platforms);
+    deepFreeze(data.routes);
+    deepFreeze(data.segments);
+
+    progressCb([2, "End..."]);
+    resetCalcScore();
+    console.timeEnd("processing");
+  } catch (e) {
+    progressCb([-1, e.message]);
+    console.warn(e);
   }
-
-  progressCb([1.2, "Array mutation..."]);
-  const data = populateWorkerData(dims);
-  data.stations.sort(byLocaleName);
-  data.routes.sort(byLocaleName);
-  data.stations.forEach(indexStation);
-  data.platforms.forEach(indexPlatform);
-  data.routes.forEach(indexRoute);
-
-  progressCb([1.4, "Index mutation..."]);
-  updateStationConnections(data);
-  updatePlatformStation(data);
-  updateRoutePlatforms(data);
-  updateRouteStations(data);
-  updatePlatformRoutes(data);
-  updateStationRoutes(data);
-  updateStationPlatforms(data);
-
-  progressCb([1.6, "Segments calculation..."]);
-  const segmentMap = new Map();
-  createRouteSegments(data, segmentMap);
-  createPlatformSegments(data, segmentMap);
-  createStationSegments(data, segmentMap);
-  linkSegmentToThings(data, segmentMap);
-  linkSegmentsTogether(data.segments);
-
-  progressCb([1.8, "Beautification..."]);
-  reorderAttributes(data.stations, stationAttrs);
-  reorderAttributes(data.platforms, platformAttrs);
-  reorderAttributes(data.routes, routeAttrs);
-  reorderAttributes(data.segments, segmentAttrs);
-  deepFreeze(data);
-
-  progressCb([2, "End..."]);
-  resetCalcScore();
-
-  console.timeEnd("processing");
 }
 async function getDimensionsFromSource(source) {
   try {
     source = new URL(source);
   } catch (err) {
-    console.warn(err.message);
+    console.warn(err.message, source);
   }
   if (source instanceof URL) {
     const res = await fetch(source.href);
@@ -158,6 +164,7 @@ async function getDimensionsFromSource(source) {
   if (typeof source === "string") {
     return JSON.parse(source);
   }
+  if (typeof source !== "object") throw new Error("Invalid data source");
   return source;
 }
 function transformStations(stations, dim_id: string) {
@@ -289,7 +296,8 @@ function createRouteSegments(data: Data) {
         fromPlatform.pos.x - toPlatform.pos.x,
         fromPlatform.pos.z - toPlatform.pos.z
       );
-      const duration = route.durations[index - 1] || distance / walkSpeed;
+      const duration = route.durations[index - 1] || distance / WALK_SPEED;
+      //*
       data.segments.push({
         index: data.segments.length,
         route: { type: route.type, index: route.index },
@@ -300,6 +308,43 @@ function createRouteSegments(data: Data) {
         prev: [],
         next: [],
       });
+      /*/
+      const ps_index = data.segments.length;
+      const ss_index = ps_index + 1;
+      const sp_index = ss_index + 1;
+      console.log(fromPlatform);
+      data.segments.push({
+        index: ps_index,
+        route: { type: "wait", index: -2 },
+        from: { type: "platform", index: fromPlatform.station },
+        to: { type: "stop", index: fromPlatform.index },
+        distance: 10,
+        duration: 0,
+        wait: WAIT_DELAY,
+        prev: [],
+        next: [ss_index],
+      });
+      data.segments.push({
+        index: ss_index,
+        route: { type: route.type, index: route.index },
+        from: { type: "stop", index: fromPlatform.index },
+        to: { type: "stop", index: toPlatform.index },
+        distance: Math.ceil(distance),
+        duration: Math.ceil(duration),
+        prev: [ ps_index ],
+        next: [ sp_index ],
+      });
+      data.segments.push({
+        index: sp_index,
+        route: { type: "walk", index: -1 },
+        from: { type: "stop", index: toPlatform.index },
+        to: { type: "platform", index: toPlatform.station },
+        distance: 10,
+        duration: 20,
+        prev: [ss_index],
+        next: [],
+      });
+      */
     }
   }
 }
@@ -310,7 +355,7 @@ function createPlatformSegments(data: Data) {
       platform.pos.x - station.pos.x,
       platform.pos.z - station.pos.z
     );
-    const duration = (distance * 2) / walkSpeed;
+    const duration = (distance * 2) / WALK_SPEED;
     data.segments.push({
       index: data.segments.length,
       route: { type: "walk", index: -1 },
@@ -328,7 +373,7 @@ function createPlatformSegments(data: Data) {
       to: { type: "platform", index: platform.index },
       distance: Math.ceil(distance),
       duration: Math.ceil(duration),
-      wait: waitDelay,
+      wait: WAIT_DELAY, // TODO remove when stops implemented
       prev: [],
       next: [],
     });
@@ -343,7 +388,7 @@ function createStationSegments(data: Data) {
         fromStation.pos.x - toStation.pos.x,
         fromStation.pos.z - toStation.pos.z
       );
-      const duration = (distance / walkSpeed) * 2;
+      const duration = (distance * 2) / WALK_SPEED;
 
       data.segments.push({
         index: data.segments.length,
