@@ -27,8 +27,7 @@ export default function HomePage() {
               key={item.name}
               to={item.href}
               aria-current={item.current ? "page" : undefined}
-              className="flex flex-col items-center border border-gray-900 bg-slate-300 p-3"
-              classNameActive="bg-gray-900 text-white"
+              className="flex flex-col items-center border border-neutral-400 bg-neutral-300 p-3"
             >
               <Icon className="text-[4em]" icon={item.icon} />
               {item.name}
