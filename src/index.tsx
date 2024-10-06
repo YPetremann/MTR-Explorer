@@ -10,9 +10,17 @@ import { Router } from "./Router.tsx";
 import { Stats } from "./components/Stats.tsx";
 
 enableCache("session");
-const root = document.getElementById("root");
-if (!root) throw new Error("Root element not found");
-createRoot(root).render(
+const updateSW = registerSW({
+  onNeedRefresh() {
+    // if (confirm("New content available. Reload?")) {
+    updateSW(true);
+    // }
+  },
+});
+
+const rootEl = document.getElementById("root");
+if (!rootEl) throw new Error("Root element not found");
+createRoot(rootEl).render(
   <StrictMode>
     <ConfigProvider>
       <DataProvider>
