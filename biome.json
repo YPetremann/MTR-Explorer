@@ -1,0 +1,65 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
+  "assists": {
+    "actions": {
+      "source": {
+        "sortJsxProps": "on",
+        "useSortedKeys": "on"
+      }
+    },
+    "enabled": true
+  },
+  "css": { "parser": { "cssModules": true } },
+  "files": { "ignore": ["public/**", "*.config.js", "*.config.ts", "*.json"] },
+  "formatter": { "enabled": true, "indentStyle": "space", "lineEnding": "lf", "lineWidth": 120 },
+  "javascript": {
+    "formatter": { "arrowParentheses": "asNeeded" },
+    "globals": ["ComlinkWorker"],
+    "jsxRuntime": "reactClassic",
+    "parser": { "unsafeParameterDecoratorsEnabled": true }
+  },
+  "json": { "parser": { "allowComments": true } },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "a11y": {
+        "all": true,
+        "useKeyWithClickEvents": "off"
+      },
+      "complexity": {
+        "all": true
+      },
+      "correctness": {
+        "all": true,
+        "useImportExtensions": "off"
+      },
+      "nursery": {
+        "all": true,
+        "noStaticElementInteractions": "off",
+        "useExplicitFunctionReturnType": "off",
+        "useImportRestrictions": "off"
+      },
+      "performance": {
+        "all": true
+      },
+      "recommended": true,
+      "security": {
+        "all": true
+      },
+      "style": {
+        "all": true,
+        "useBlockStatements": "off",
+        "useNamingConvention": "off"
+      },
+      "suspicious": {
+        "all": true,
+        "noArrayIndexKey": "off",
+        "noConsole": "off",
+        "noReactSpecificProps": "off"
+      }
+    }
+  },
+  "organizeImports": { "enabled": true },
+
+  "vcs": { "clientKind": "git", "defaultBranch": "main", "enabled": true, "useIgnoreFile": true }
+}
