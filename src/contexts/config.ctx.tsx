@@ -13,7 +13,7 @@ const defaultProfile = {
     },
     "Local Example": {
       systemMap: {
-        dataUrl: new URL("/MTR-Helper/data.json", document.location).href,
+        dataUrl: new URL("/MTR-Explorer/data.json", document.location).href,
       },
     },
   },

@@ -4,6 +4,11 @@ import { comlink } from "vite-plugin-comlink";
 import checker from "vite-plugin-checker";
 import iconify from "@tomjs/vite-plugin-iconify";
 import { VitePWA } from "vite-plugin-pwa";
+import { minimal2023Preset as preset } from '@vite-pwa/assets-generator/config'
+import inlineSource from "vite-plugin-inline-source";
+import { ViteMinifyPlugin } from 'vite-plugin-minify'
+
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/MTR-Explorer/",
@@ -17,41 +22,30 @@ export default defineConfig({
     }),
     comlink(),
     VitePWA({
+      injectRegister: null,
+      devOptions:{ enabled: true },
       workbox: { globPatterns: ["**/*"] },
       includeAssets: ["**/*"],
+      pwaAssets:{
+        preset,
+        images: [ 'public/favicon.svg' ],
+        overrideManifestIcons: true,
+        includeHtmlHeadLinks: false,
+        injectThemeColor:false,
+      },
       manifest: {
         theme_color: "#831843",
         background_color: "#831843",
-        display: "standalone",
-        scope: "/",
-        start_url: "/",
-        short_name: "vite test",
-        description: "testing vite pwa",
-        name: "vite test",
-        icons: [
-          {
-            src: "/icon-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "/icon-256x256.png",
-            sizes: "256x256",
-            type: "image/png",
-          },
-          {
-            src: "/icon-384x384.png",
-            sizes: "384x384",
-            type: "image/png",
-          },
-          {
-            src: "/icon-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
-        ],
+        display: "minimal-ui",
+        scope: "/MTR-Explorer/",
+        start_url: "/MTR-Explorer/",
+        short_name: "MTR EX",
+        description: "Explore the MTR network",
+        name: "MTR Explorer",
       },
     }),
+    inlineSource(),
+    ViteMinifyPlugin(),
     iconify({
       local: {
         sets: ["mdi", "material-symbols"],

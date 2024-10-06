@@ -6,13 +6,9 @@ import { DotStation } from "./DotStation";
 import { RouteLink } from "./RouteLink";
 import { Time } from "./Time";
 
-function ordinal(n) {
-  if (n % 100 > 10 && n % 100 < 14) return `${n}th`;
-  if (n % 10 === 1) return `${n}st`;
-  if (n % 10 === 2) return `${n}nd`;
-  if (n % 10 === 3) return `${n}rd`;
-  return `${n}th`;
-}
+const suffixes = { one: "st", two: "nd", few: "rd", other: "th" };
+const pr = new Intl.PluralRules("en-US", { type: "ordinal" });
+const ordinal = n => `${n}${suffixes[pr.select(n)]}`;
 
 export function Travel({ points, algo }) {
   const data = useData();

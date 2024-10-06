@@ -387,8 +387,7 @@ function createStationSegments(data: Data) {
   }
 }
 function getThing(obj, type) {
-  let kind = type;
-  if (!kind && typeof obj === "object") kind = obj.type;
+  const kind = !type && typeof obj === "object" ? obj.type : type;
   const index = typeof obj === "object" ? obj.index : obj;
   switch (kind) {
     case "route":

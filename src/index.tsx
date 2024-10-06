@@ -8,6 +8,7 @@ import { DataProvider } from "./contexts/data.ctx.tsx";
 
 import { Router } from "./Router.tsx";
 import { Stats } from "./components/Stats.tsx";
+import { registerSW } from "virtual:pwa-register";
 
 enableCache("session");
 const updateSW = registerSW({

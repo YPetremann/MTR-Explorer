@@ -10,7 +10,7 @@
     "enabled": true
   },
   "css": { "parser": { "cssModules": true } },
-  "files": { "ignore": ["public/**", "*.config.js", "*.config.ts", "*.json"] },
+  "files": { "include": ["src/**"] },
   "formatter": { "enabled": true, "indentStyle": "space", "lineEnding": "lf", "lineWidth": 120 },
   "javascript": {
     "formatter": { "arrowParentheses": "asNeeded" },
