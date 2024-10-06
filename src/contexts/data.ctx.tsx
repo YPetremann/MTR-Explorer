@@ -1,16 +1,18 @@
-import * as Comlink from "comlink";
+import { proxy } from "comlink";
 import React from "react";
 import type { Data } from "../../definitions/worker";
-import Progress from "../components/Progress";
-import dataWorker from "../worker/data";
-import useProfile from "./profile.ctx";
+import { Progress } from "../components/Progress";
+import { dataWorker } from "../worker/data";
+import { useProfile } from "./profile.ctx";
 
 export const DataContext = React.createContext({});
 
+// biome-ignore lint/nursery/useComponentExportOnlyModules: this is a context
 export function useData(): Data {
   const { data } = React.useContext(DataContext);
   return data;
 }
+// biome-ignore lint/nursery/useComponentExportOnlyModules: this is a context
 export function useLock() {
   const { setLock } = React.useContext(DataContext);
   React.useEffect(() => {
@@ -19,6 +21,7 @@ export function useLock() {
   }, [setLock]);
 }
 
+// biome-ignore lint/nursery/useComponentExportOnlyModules: this is a context
 export function usePathFinding() {
   return dataWorker.calcPath;
 }
@@ -41,9 +44,8 @@ export function DataProvider({ children }) {
   React.useEffect(() => {
     const t = setTimeout(() => {
       if (lock) return;
-      console.log("loading data");
       dataWorker
-        .load(source, Comlink.proxy(setLoading))
+        .load(source, proxy(setLoading))
         .then(() => dataWorker.getData())
         .then(data => setData(data));
     }, 10);

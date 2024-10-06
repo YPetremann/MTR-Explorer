@@ -1,6 +1,7 @@
+import type { Data } from "../../definitions/worker";
 import { useConfig } from "./config.ctx";
 
-export default function useProfile(): Data {
+export function useProfile(): Data {
   const [config, setConfig] = useConfig();
 
   // update the profile
@@ -34,11 +35,8 @@ export default function useProfile(): Data {
       const name = cfg.currentProfile;
       const index = Object.keys(cfg.profiles).indexOf(name);
       const profiles = cfg.profiles;
-      console.log(profiles);
       delete profiles[name];
-      console.log(profiles);
       const currentProfile = Object.keys(profiles).at(index);
-      console.log("should have deleted");
       return { ...cfg, currentProfile, profiles };
     });
   }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useData } from "../contexts/data.ctx";
 import { contrast } from "../utils/contrast";
 import { lang } from "../utils/lang";
+import type { Route } from "../../definitions/worker";
 
 interface RouteLinkProps {
   route: Route;
@@ -29,9 +30,9 @@ function getRouteIcon(type) {
 function useDataRoute(index) {
   const data = useData();
   const route =
-    index == -1
+    index === -1
       ? { name: "Walk", color: "white", type: "walk" }
-      : index == -2
+      : index === -2
         ? { name: "Wait", color: "white", type: "wait" }
         : data.routes[index];
   if (!route) return;
@@ -45,13 +46,13 @@ function useDataRoute(index) {
   };
 }
 
-export default function RouteLink({ route, index }: RouteLinkProps) {
+export function RouteLink({ route, index }: RouteLinkProps) {
   const rt = useDataRoute(route?.index ?? index);
   if (!rt) return;
   return (
-    <Link className="break-words inline-flex flex-wrap items-baseline gap-x-1" to={`/route/${rt.index}`}>
+    <Link className="inline-flex flex-wrap items-baseline gap-x-1 break-words" to={`/route/${rt.index}`}>
       <div
-        className="whitespace-nowrap inline-flex items-center gap-1 px-1"
+        className="inline-flex items-center gap-1 whitespace-nowrap px-1"
         style={{ background: rt.colorBg, color: rt.colorFg }}
       >
         <Icon icon={rt.icon} />

@@ -35,6 +35,7 @@
       },
       "nursery": {
         "all": true,
+        "noSecrets": "off",
         "noStaticElementInteractions": "off",
         "useExplicitFunctionReturnType": "off",
         "useImportRestrictions": "off"
@@ -60,6 +61,13 @@
     }
   },
   "organizeImports": { "enabled": true },
-
+  "overrides": [
+    {
+      "include": ["**/*.test.ts", "**/*.test.tsx"],
+      "javascript": {
+        "globals": ["it", "describe", "expect"]
+      }
+    }
+  ],
   "vcs": { "clientKind": "git", "defaultBranch": "main", "enabled": true, "useIgnoreFile": true }
 }

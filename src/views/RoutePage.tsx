@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-import DotStation from "../components/DotStation";
-import Header from "../components/Header";
-import Main from "../components/Main";
-import RouteLink from "../components/RouteLink";
+import { DotStation } from "../components/DotStation";
+import { Header } from "../components/Header";
+import { Main } from "../components/Main";
+import { RouteLink } from "../components/RouteLink";
 import { useData } from "../contexts/data.ctx";
 import { lang } from "../utils/lang";
 
-export default function RoutePage() {
+export function RoutePage() {
   const data = useData();
   const params = useParams();
   const route = data.routes[params.route_id];
@@ -28,7 +28,7 @@ export default function RoutePage() {
           <div className="col-start-1 row-start-1 m-[5px] border-l-[7px]" style={{ borderColor: route.color }} />
           <div className="col-start-1 row-start-1">
             {route.stations.map((station, index, a) => (
-              <DotStation index={station} minor={index > 0 && index < a.length - 1} />
+              <DotStation key={index} index={station} minor={index > 0 && index < a.length - 1} />
             ))}
           </div>
         </div>

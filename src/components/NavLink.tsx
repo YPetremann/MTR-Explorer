@@ -3,14 +3,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function NavLink({
-  className,
-  classNamePending,
-  classNameActive,
-  classNameTransitioning,
-  children,
-  ...props
-}) {
+export function NavLink({ className, classNamePending, classNameActive, classNameTransitioning, children, ...props }) {
   return (
     <OrignalNavLink
       {...props}

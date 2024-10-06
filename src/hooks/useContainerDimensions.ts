@@ -1,6 +1,6 @@
 import React from "react";
 
-export const useContainerDimensions = myRef => {
+export function useContainerDimensions(myRef: React.MutableRefObject) {
   const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
 
   React.useEffect(() => {
@@ -25,5 +25,4 @@ export const useContainerDimensions = myRef => {
   }, [myRef]);
 
   return dimensions;
-};
-export default useContainerDimensions;
+}

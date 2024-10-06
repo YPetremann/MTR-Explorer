@@ -1,14 +1,14 @@
 import React from "react";
-import Button from "../components/Button";
-import Header from "../components/Header";
-import Input from "../components/Input";
-import Main from "../components/Main";
-import Select from "../components/Select";
+import { Button } from "../components/Button";
+import { Header } from "../components/Header";
+import { Input } from "../components/Input";
+import { Main } from "../components/Main";
+import { Select } from "../components/Select";
 import { useConfig } from "../contexts/config.ctx";
 import { useLock } from "../contexts/data.ctx";
-import useProfile from "../contexts/profile.ctx";
+import { useProfile } from "../contexts/profile.ctx";
 
-export default function ConfigPage() {
+export function ConfigPage() {
   useLock();
   const [config, setConfig] = useConfig();
   const profileNames = Object.keys(config.profiles);
@@ -28,11 +28,16 @@ export default function ConfigPage() {
   return (
     <>
       <Header name="Config">
-        <div className="flex flex-col	gap-4">
-          <div className="flex items-center flex-wrap gap-4">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <span className="w-[240px]">Theme</span>
             <div className="flex grow">
-              <Button active={theme == "dark"} icon="mdi:moon-and-stars" onClick={() => setTheme("dark")} text="Dark" />
+              <Button
+                active={theme === "dark"}
+                icon="mdi:moon-and-stars"
+                onClick={() => setTheme("dark")}
+                text="Dark"
+              />
               <Button
                 active={theme === undefined}
                 icon="mdi:auto-awesome"
@@ -40,17 +45,22 @@ export default function ConfigPage() {
                 text="System"
               />
               <Button
-                active={theme == "light"}
+                active={theme === "light"}
                 icon="mdi:white-balance-sunny"
                 onClick={() => setTheme("light")}
                 text="Light"
               />
             </div>
           </div>
-          <label className="flex items-center flex-wrap gap-4">
+          <label className="flex flex-wrap items-center gap-4" htmlFor="cfgProfile">
             <span className="w-[240px]">Profile</span>
             <div className="flex grow">
-              <Select className="grow" onChange={ev => profile.change(ev.target.value)} value={profile.name}>
+              <Select
+                id="cfgProfile"
+                className="grow"
+                onChange={ev => profile.change(ev.target.value)}
+                value={profile.name}
+              >
                 {profileNames.map(profile => (
                   <option key={profile} value={profile}>
                     {profile}
@@ -63,16 +73,17 @@ export default function ConfigPage() {
             <div>
               <Button icon="mdi:add" onClick={profile.create} />
             </div>
-          </label>{" "}
+          </label>
         </div>
       </Header>
       <Main>
         <section className="flex flex-col gap-4">
           <h2 className="text-2xl">System map</h2>
-          <label className="flex items-center gap-4 flex-wrap">
+          <label className="flex flex-wrap items-center gap-4" htmlFor="cfgSMDurl">
             <span className="w-[240px]">Data URL</span>
-            <div className="grow flex">
+            <div className="flex grow">
               <Input
+                id="cfgSMDurl"
                 className="grow"
                 onChange={ev => setSystemMapDataUrl(ev.target.value)}
                 value={systemMap?.dataUrl ?? ""}

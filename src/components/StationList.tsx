@@ -6,7 +6,7 @@ export function StationList() {
   return (
     <datalist id="stations">
       {data.stations.map(station => {
-        const infos = [];
+        const infos: string[] = [];
         infos.push(`zone ${station.zone}`);
         if (station.platforms.length > 0) infos.push(`${station.platforms.length} platforms`);
         if (station.connections.length > 0) infos.push(`${station.connections.length} platforms`);

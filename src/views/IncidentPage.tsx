@@ -1,7 +1,7 @@
-import Header from "../components/Header";
-import Main from "../components/Main";
+import { Header } from "../components/Header";
+import { Main } from "../components/Main";
 
-export default function ConfigPage() {
+export function IncidentPage() {
   return (
     <>
       <Header name="Incidents">

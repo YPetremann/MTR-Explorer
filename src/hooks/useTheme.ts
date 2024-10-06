@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function useTheme(theme: "dark" | "light" | "system") {
+export function useTheme(theme: "dark" | "light" | "system") {
   React.useInsertionEffect(() => {
     const cl = document.documentElement.classList;
     const toggle = ({ matches: m }) => (m ? cl.add("dark") : cl.remove("dark"));

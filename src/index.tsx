@@ -6,11 +6,13 @@ import { StationList } from "./components/StationList.tsx";
 import { ConfigProvider } from "./contexts/config.ctx.tsx";
 import { DataProvider } from "./contexts/data.ctx.tsx";
 
-import Router from "./Router.tsx";
-import Stats from "./components/Stats.tsx";
+import { Router } from "./Router.tsx";
+import { Stats } from "./components/Stats.tsx";
 
 enableCache("session");
-createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root");
+if (!root) throw new Error("Root element not found");
+createRoot(root).render(
   <StrictMode>
     <ConfigProvider>
       <DataProvider>

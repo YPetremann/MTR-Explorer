@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
-import { Circle, Layer, Stage } from "react-konva";
+import { Circle, Layer, Line, Stage } from "react-konva";
 import { useData } from "../contexts/data.ctx";
-import useContainerDimensions from "../hooks/useContainerDimensions";
+import { useContainerDimensions } from "../hooks/useContainerDimensions";
 
 /** render on canvas the map of the network */
-export default function NetworkMap({ segments }) {
+export function NetworkMap({ segments }) {
   const data = useData();
   const canvas = React.useRef<HTMLCanvasElement>(null);
   const { width } = useContainerDimensions(canvas);
@@ -54,34 +54,31 @@ export default function NetworkMap({ segments }) {
         width={width}
       >
         <Layer>
-          {/*segments.map((sg) => {
+          {segments.map(sg => {
             const from = data.stations[sg.from].pos;
             const to = data.stations[sg.to].pos;
             const offset = sg.routes.length / 2;
             const vector = [to[0] - from[0], to[1] - from[1]];
-            const normal = [
-              vector[1] / Math.hypot(...vector),
-              -vector[0] / Math.hypot(...vector),
-            ];
+            const normal = [vector[1] / Math.hypot(...vector), -vector[0] / Math.hypot(...vector)];
 
             return sg.routes
-              .map((rt) => data.routes[rt] ?? { color: "black" })
+              .map(rt => data.routes[rt] ?? { color: "black" })
               .map((rt, i) => (
                 <Line
-                  x={(normal[0] / scale) * (i - offset) * 2}
-                  y={(normal[1] / scale) * (i - offset) * 2}
-                  key={sg.index + "_" + i}
+                  key={`${sg.index}_${i}`}
                   points={[from, to].flat()}
-                  tension={0}
                   stroke={rt.color}
                   strokeWidth={2 / scale}
+                  tension={0}
+                  x={(normal[0] / scale) * (i - offset) * 2}
+                  y={(normal[1] / scale) * (i - offset) * 2}
                 />
               ));
-          })*/}
+          })}
           {data.stations.map(st => (
             <Fragment key={st.index}>
-              <Circle fill={"black"} radius={3 / scale} x={st.pos[0]} y={st.pos[1]} />
-              <Circle fill={"white"} radius={2 / scale} x={st.pos[0]} y={st.pos[1]} />
+              <Circle fill="black" radius={3 / scale} x={st.pos[0]} y={st.pos[1]} />
+              <Circle fill="white" radius={2 / scale} x={st.pos[0]} y={st.pos[1]} />
             </Fragment>
           ))}
         </Layer>

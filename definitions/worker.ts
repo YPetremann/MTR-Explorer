@@ -15,11 +15,11 @@ export interface Station {
   /** station zone */
   zone: number;
   /** station connections */
-  connections: Array<ID>;
+  connections: ID[];
   /** station platforms */
-  platforms: Array<ID>;
+  platforms: ID[];
   /** station platforms */
-  routes: Array<ID>;
+  routes: ID[];
   /** station platforms */
   id: string;
   /** station platforms */
@@ -45,10 +45,10 @@ export interface Route {
   color: string;
   type: string;
   circular: Circular;
-  stations: Array<ID>;
-  platforms: Array<ID>;
-  durations: Array<number>;
-  densities: Array<number>;
+  stations: ID[];
+  platforms: ID[];
+  durations: number[];
+  densities: number[];
   id: string;
   name: string[];
   pattern: string;
@@ -70,12 +70,12 @@ export interface Segment {
   next: ID[];
   walk: boolean;
   routes: ID[];
-  alt: Array<Alternate>;
+  alt: Alternate[];
 }
 
 export interface Data {
-  stations: Array<Station>;
-  routes: Array<Route>;
-  platforms: Array<Platform>;
-  segments: Array<Segment>;
+  stations: Station[];
+  routes: Route[];
+  platforms: Platform[];
+  segments: Segment[];
 }

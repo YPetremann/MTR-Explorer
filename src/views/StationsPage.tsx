@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "../components/Header";
-import Input from "../components/Input";
-import Main from "../components/Main";
-import StationLink from "../components/StationLink";
+import { Header } from "../components/Header";
+import { Input } from "../components/Input";
+import { Main } from "../components/Main";
+import { StationLink } from "../components/StationLink";
 import { useData } from "../contexts/data.ctx";
 
-export default function StationsPage() {
+export function StationsPage() {
   const [filter, setFilter] = React.useState("");
   const data = useData();
   const lf = filter.toLowerCase();

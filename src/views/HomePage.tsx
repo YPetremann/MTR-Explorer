@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import Header from "../components/Header";
-import Main from "../components/Main";
-import NavLink from "../components/NavLink";
+import { Header } from "../components/Header";
+import { Main } from "../components/Main";
+import { NavLink } from "../components/NavLink";
 const navigation = [
   { href: "/travel", name: "Travel", icon: "mdi:train" },
   { href: "/map", name: "Map", icon: "mdi:map" },
@@ -10,7 +10,7 @@ const navigation = [
   { href: "/incidents", name: "Incidents", icon: "mdi:alert" },
   { href: "/config", name: "Config", icon: "mdi:wrench" },
 ];
-export default function HomePage() {
+export function HomePage() {
   return (
     <>
       <Header name="Welcome to MTR Explorer">
@@ -20,7 +20,7 @@ export default function HomePage() {
         </p>
       </Header>
       <Main>
-        <div className="grid grid-cols-[128px_128px] justify-center	gap-2">
+        <div className="grid grid-cols-[128px_128px] justify-center gap-2">
           {navigation.map(item => (
             <NavLink
               aria-current={item.current ? "page" : undefined}

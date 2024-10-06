@@ -1,16 +1,16 @@
-import classnames from "../utils/classnames";
-import StationLink from "./StationLink";
+import { classnames } from "../utils/classnames";
+import { StationLink } from "./StationLink";
 
-export default function DotStation({ index, minor, major }) {
-  const unspec = !major && !minor;
+export function DotStation({ index, minor, major }) {
+  const unspec = !(major || minor);
   return (
-    <div className={classnames("flex items-center gap-[5px] DS", major && "font-bold", minor && "text-s")}>
+    <div className={classnames("flex items-center gap-[5px]", major && "font-bold", minor && "text-s")}>
       <div
         className={classnames(
-          "border-main bg-main border-solid",
-          unspec && "size-[14px] m-[1px] border-[3px] rounded-full",
-          major && "size-[14px] m-[1px] border-[3px] rotate-45",
-          minor && "size-[10px] m-[3px] border-[2px] rounded-full",
+          "border-main border-solid bg-main",
+          unspec && "m-[1px] size-[14px] rounded-full border-[3px]",
+          major && "m-[1px] size-[14px] rotate-45 border-[3px]",
+          minor && "m-[3px] size-[10px] rounded-full border-[2px]",
         )}
       />
       <StationLink index={index} />

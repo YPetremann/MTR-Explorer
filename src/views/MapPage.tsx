@@ -1,8 +1,8 @@
 import { useSearchParams } from "react-router-dom";
-import Header from "../components/Header";
-import Main from "../components/Main";
+import { Header } from "../components/Header";
+import { Main } from "../components/Main";
 
-export default function MapPage() {
+export function MapPage() {
   const { stations, platforms, routes, segments, zoom } = useSearchParams();
   return (
     <>

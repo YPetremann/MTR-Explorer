@@ -7,9 +7,9 @@ export interface RawRoute {
   name: string;
   number: string;
   type: RawType;
-  stations: Array<ID>;
-  durations: Array<number>;
-  densities: Array<number>;
+  stations: ID[];
+  durations: number[];
+  densities: number[];
   circular: RawCircular;
 }
 export interface RawPosition {
@@ -23,8 +23,8 @@ export interface RawStation {
   zone: number;
   x: number;
   z: number;
-  connections: Array<ID>;
-  positions?: Array<ID>;
+  connections: ID[];
+  positions?: ID[];
 }
 export type RawType =
   | "train_normal"
@@ -37,10 +37,10 @@ export type RawType =
   | "airplane_normal";
 
 export interface RawDimension {
-  routes: Array<RawRoute>;
+  routes: RawRoute[];
   positions: Map<string, RawPosition>;
   stations: Map<ID, RawStation>;
-  types: Array<RawType>;
+  types: RawType[];
 }
 
-export type RawData = Array<RawDimension>;
+export type RawData = RawDimension[];

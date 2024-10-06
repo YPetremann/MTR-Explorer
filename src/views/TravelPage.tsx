@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../components/Header";
-import Main from "../components/Main";
-import Travel from "../components/Travel";
+import { Header } from "../components/Header";
+import { Main } from "../components/Main";
+import { Travel } from "../components/Travel";
 import { TravelForm as Form } from "../components/TravelForm";
 const quests = {
   "Destination Vol. 1: Reston & Fairview":
@@ -15,7 +15,7 @@ const quests = {
   "Expedition Vol. 6: A Final Test": "7656000097055420305/-4664309391657875505",
 };
 const def = quests["Destination Vol. 1: Reston & Fairview"];
-export default function TravelPage() {
+export function TravelPage() {
   const { algo, "*": rest = def } = useParams();
   const navigate = useNavigate();
   const points = rest?.split("/");

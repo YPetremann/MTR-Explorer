@@ -2,7 +2,7 @@ import { useState } from "react";
 const noStation = { value: "", label: "(no station found)" };
 const moreOptions = { value: "...", label: "..." };
 
-export default function SearchSelect({ options, value, onChange, className }) {
+export function SearchSelect({ options, value, onChange, className }) {
   const [search, setSearch] = useState();
   const [selectFocus, setSelectFocus] = useState(false);
   const [more, setMore] = useState(false);
@@ -16,9 +16,9 @@ export default function SearchSelect({ options, value, onChange, className }) {
   }
 
   return (
-    <div className={"relative flex -mr-[1px] last:mr-0" + className}>
+    <div className={`-mr-[1px] relative flex last:mr-0${className}`}>
       <input
-        className="border border-neutral-400 bg-main text-main border-solid px-3 min-w-0 w-20 grow"
+        className="w-20 min-w-0 grow border border-neutral-400 border-solid bg-main px-3 text-main"
         onChange={ev => {
           const value = ev.target.value;
           if (value) setSelectFocus(true);
@@ -28,10 +28,10 @@ export default function SearchSelect({ options, value, onChange, className }) {
         value={search ?? value?.label ?? ""}
       />
       {selectFocus && (
-        <div className="absolute box-content border-neutral-400 bg-main text-main overflow-y-auto max-h-[20rem] z-10 top-full left-0 right-0 m-0 -mt-[1px] border border-solid SearchSelect__select">
+        <div className="-mt-[1px] SearchSelect__select absolute top-full right-0 left-0 z-10 m-0 box-content max-h-[20rem] overflow-y-auto border border-neutral-400 border-solid bg-main text-main">
           {proposed.map(option => (
             <div
-              className="leading-4 p-2 cursor-pointer"
+              className="cursor-pointer p-2 leading-4"
               key={option.value}
               onClick={() => {
                 const value = option.value;

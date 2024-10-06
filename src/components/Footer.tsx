@@ -5,18 +5,18 @@ export function Footer() {
         <a href="https://github.com/YPetremann/MTR-Explorer/" property="dct:title" rel="cc:attributionURL">
           MTR Explorer
         </a>
-        {" by "}
+        <span> by </span>
         <a href="https://github.com/YPetremann/" property="cc:attributionName" rel="cc:attributionURL dct:creator">
           YPetremann
         </a>
-        {" is licensed under "}
+        <span> is licensed under </span>
         <a
           className="inline-block"
           href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1"
           rel="license noopener noreferrer"
           target="_blank"
         >
-          {" CC BY-NC-SA 4.0 "}
+          <span> CC BY-NC-SA 4.0 </span>
           <img
             alt=""
             className="ml-[3px] inline h-[22px] align-text-bottom"

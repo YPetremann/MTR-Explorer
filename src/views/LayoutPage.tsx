@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 import { Footer } from "../components/Footer";
-import MainMenu from "../components/MainMenu";
+import { MainMenu } from "../components/MainMenu";
 
-export default function LayoutPage() {
+export function LayoutPage() {
   return (
-    <div className="min-h-full bg-main text-main flex flex-col">
+    <div className="flex min-h-full flex-col bg-main text-main">
       <MainMenu />
       <Outlet />
       <div className="grow" />

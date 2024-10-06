@@ -1,7 +1,7 @@
 import React from "react";
 import Stat from "stats.js";
 
-export default function Stats() {
+export function Stats() {
   const container = React.useRef();
   React.useEffect(() => {
     const ct = container.current;
@@ -50,5 +50,5 @@ export default function Stats() {
       stats3.dom.remove();
     };
   }, []);
-  return <div className="flex row bg-black" ref={container} />;
+  return <div className="row flex bg-black" ref={container} />;
 }

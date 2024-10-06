@@ -2,10 +2,10 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
 import { useData } from "../contexts/data.ctx";
 import { lang } from "../utils/lang";
-import Button from "./Button";
-import Label from "./Label";
-import SearchSelect from "./SearchSelect";
-import Select from "./Select";
+import { Button } from "./Button";
+import { Label } from "./Label";
+import { SearchSelect } from "./SearchSelect";
+import { Select } from "./Select";
 const algos = [
   { value: "duration", label: "Prefer minimal duration" },
   { value: "distance", label: "Prefer minimal distance" },
@@ -24,12 +24,11 @@ export function TravelForm({
   const setPoint = (i, value) => setPoints(points.toSpliced(i, 1, value));
   const delPoint = i => setPoints(points.toSpliced(i, 1));
   const addPoint = i => setPoints(points.toSpliced(i, 0, ""));
-  const swapPoint = (i, j) => setPoints(points.toSpliced(i, 1, points[j]).toSpliced(j, 1, points[i]));
   const invert = () => setPoints(points.toReversed());
   const submit = () => onSubmit(points, mode);
   const data = useData();
   const options = data.stations.map(station => {
-    const infos = [];
+    const infos: string[] = [];
     infos.push(`zone ${station.zone}`);
     if (station.platforms.length > 0) infos.push(`${station.platforms.length} platforms`);
     if (station.connections.length > 0) infos.push(`${station.connections.length} platforms`);
@@ -42,28 +41,28 @@ export function TravelForm({
   const last = points.length - 1;
   return (
     <div className="flex flex-row">
-      <div className="flex flex-col grow gap-2">
+      <div className="flex grow flex-col gap-2">
         {points.map((point, i) => (
-          <div className="flex row gap-2" key={i}>
-            <div className="flex row grow">
+          <div className="row flex gap-2" key={i}>
+            <div className="row flex grow">
               <Label>
                 {i < last && (
                   <Icon
-                    className="row-start-1 col-start-1 text-xl relative top-[0.165em]"
-                    icon={"material-symbols:line-start-" + (i > 0 ? "circle" : "diamond")}
+                    className="relative top-[0.165em] col-start-1 row-start-1 text-xl"
+                    icon={`material-symbols:line-start-${i > 0 ? "circle" : "diamond"}`}
                     rotate="1"
                   />
                 )}
                 {i > 0 && (
                   <Icon
-                    className="row-start-1 col-start-1 text-xl relative bottom-[0.165em]"
-                    icon={"material-symbols:line-end-" + (i < last ? "circle" : "arrow")}
+                    className="relative bottom-[0.165em] col-start-1 row-start-1 text-xl"
+                    icon={`material-symbols:line-end-${i < last ? "circle" : "arrow"}`}
                     rotate="1"
                   />
                 )}
               </Label>
               <SearchSelect
-                className="flex grow shrink"
+                className="flex shrink grow"
                 onChange={({ value }) => setPoint(i, value)}
                 options={options}
                 value={options.find(({ value }) => value === point)}
@@ -75,10 +74,10 @@ export function TravelForm({
             </div>
           </div>
         ))}
-        <div className="flex row gap-2">
-          <div className="flex row grow">
+        <div className="row flex gap-2">
+          <div className="row flex grow">
             <Label icon="mdi:gear" />
-            <Select className="grow shrink" onChange={e => setMode(e.target.value)} value={mode}>
+            <Select className="shrink grow" onChange={e => setMode(e.target.value)} value={mode}>
               {algos.map(({ value, label }) => (
                 <option key={value} value={value}>
                   {label}

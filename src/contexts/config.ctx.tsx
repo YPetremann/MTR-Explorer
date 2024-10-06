@@ -1,7 +1,7 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import React from "react";
 import type { Data } from "../../definitions/worker";
-import useTheme from "../hooks/useTheme";
+import { useTheme } from "../hooks/useTheme";
 
 const defaultProfile = {
   currentProfile: "LPS server",
@@ -21,6 +21,7 @@ const defaultProfile = {
 
 export const ConfigContext = React.createContext(defaultProfile);
 
+// biome-ignore lint/nursery/useComponentExportOnlyModules: this is a context
 export function useConfig(): Data {
   return React.useContext(ConfigContext);
 }

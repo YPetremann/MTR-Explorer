@@ -1,3 +1,3 @@
-export default function classnames(...args) {
+export function classnames(...args) {
   return args.filter(Boolean).join(" ");
 }

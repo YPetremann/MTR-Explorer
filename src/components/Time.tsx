@@ -1,4 +1,4 @@
-export default function Time({ ticks }) {
+export function Time({ ticks }) {
   const seconds = Math.round(ticks / 20);
   const minutes = Math.floor(seconds / 60);
   return (

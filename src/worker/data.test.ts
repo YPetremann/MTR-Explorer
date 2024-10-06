@@ -1,21 +1,21 @@
 import type { Segment } from "../../definitions/worker";
-import json from "./data.min.json";
-import * as worker from "./data.worker";
+import { json } from "./data.min.json";
+import { load, calcPath } from "./data.worker";
 
 function displayPath(path: Segment[]) {
-  console.log("Path:");
+  console.info("Path:");
   for (const i in path) {
-    console.log(`  ${i}: ${JSON.stringify(path[i])}`.slice(0, 80));
+    console.info(`  ${i}: ${JSON.stringify(path[i])}`.slice(0, 80));
   }
 }
 
 describe("data", () => {
   it("load", async () => {
-    worker.load(json);
+    await load(json);
   });
 
   it("calcPath", async () => {
-    const path = worker.calcPath(
+    const path = await calcPath(
       ["7656000097055420305", "-7959022631105399792", "-5431161251827272709", "946998934114483299"],
       "distance",
     );
@@ -23,7 +23,7 @@ describe("data", () => {
   });
 
   it("calcPath", async () => {
-    const path = worker.calcPath(
+    const path = await calcPath(
       [
         "7656000097055420305",
         "-4664309391657875505",

@@ -14,7 +14,7 @@ export function useAnimatedValue(start, target, ratep, rates) {
   const [value, setValue] = React.useState(start);
   React.useEffect(() => {
     let last = Date.now();
-    let frame;
+    let frame: number;
     function update() {
       const now = Date.now();
       const delta = (now - last) / 1000;
