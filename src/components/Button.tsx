@@ -1,13 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 
-export default function Button({
-  className,
-  icon,
-  text,
-  children,
-  active,
-  ...props
-}) {
+export default function Button({ className, icon, text, children, active, ...props }) {
   return (
     <button
       className={

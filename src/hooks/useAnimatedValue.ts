@@ -20,7 +20,7 @@ export function useAnimatedValue(start, target, ratep, rates) {
       const delta = (now - last) / 1000;
       last = now;
       frame = requestAnimationFrame(update);
-      setValue((value) => {
+      setValue(value => {
         if (value === target) cancelAnimationFrame(frame);
         return value < target
           ? Math.min(value + ratep * delta, target)

@@ -1,6 +1,6 @@
-import React from "react";
-import { Data } from "../../definitions/worker";
 import * as Comlink from "comlink";
+import React from "react";
+import type { Data } from "../../definitions/worker";
 import Progress from "../components/Progress";
 import dataWorker from "../worker/data";
 import useProfile from "./profile.ctx";
@@ -45,14 +45,14 @@ export function DataProvider({ children }) {
       dataWorker
         .load(source, Comlink.proxy(setLoading))
         .then(() => dataWorker.getData())
-        .then((data) => setData(data));
+        .then(data => setData(data));
     }, 10);
     return () => clearTimeout(t);
   }, [source, lock]);
 
   return (
     <DataContext.Provider value={{ data, setLock }}>
-      <Progress message={message} value={progress} size={[1, 1]} />
+      <Progress message={message} size={[1, 1]} value={progress} />
       {children}
     </DataContext.Provider>
   );

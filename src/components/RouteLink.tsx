@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { Link } from "react-router-dom";
 import { useData } from "../contexts/data.ctx";
-import { lang } from "../utils/lang";
 import { contrast } from "../utils/contrast";
+import { lang } from "../utils/lang";
 
 interface RouteLinkProps {
   route: Route;
@@ -32,8 +32,8 @@ function useDataRoute(index) {
     index == -1
       ? { name: "Walk", color: "white", type: "walk" }
       : index == -2
-      ? { name: "Wait", color: "white", type: "wait" }
-      : data.routes[index];
+        ? { name: "Wait", color: "white", type: "wait" }
+        : data.routes[index];
   if (!route) return;
 
   return {
@@ -49,10 +49,7 @@ export default function RouteLink({ route, index }: RouteLinkProps) {
   const rt = useDataRoute(route?.index ?? index);
   if (!rt) return;
   return (
-    <Link
-      className="break-words inline-flex flex-wrap items-baseline gap-x-1"
-      to={`/route/${rt.index}`}
-    >
+    <Link className="break-words inline-flex flex-wrap items-baseline gap-x-1" to={`/route/${rt.index}`}>
       <div
         className="whitespace-nowrap inline-flex items-center gap-1 px-1"
         style={{ background: rt.colorBg, color: rt.colorFg }}
@@ -61,9 +58,7 @@ export default function RouteLink({ route, index }: RouteLinkProps) {
         {lang(rt.name)}
       </div>
       {rt.number && <span className="break-words">{lang(rt.number)}</span>}
-      {rt.last && (
-        <span className="break-words">{`to ${lang(rt.last?.name)}`}</span>
-      )}
+      {rt.last && <span className="break-words">{`to ${lang(rt.last?.name)}`}</span>}
     </Link>
   );
 }

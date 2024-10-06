@@ -1,5 +1,3 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
-
 export default function Select({ className, children, ...props }) {
   return (
     <select

@@ -1,17 +1,17 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import LayoutPage from "./views/LayoutPage";
-import TravelPage from "./views/TravelPage";
-import RoutesPage from "./views/RoutesPage";
-import RoutePage from "./views/RoutePage";
-import StationsPage from "./views/StationsPage";
-import StationPage from "./views/StationPage";
-import IncidentPage from "./views/IncidentPage";
-import DebugPage from "./views/DebugPage";
-import Page404 from "./views/Page404";
-import HomePage from "./views/HomePage";
 import ConfigPage from "./views/ConfigPage";
+import DebugPage from "./views/DebugPage";
+import HomePage from "./views/HomePage";
+import IncidentPage from "./views/IncidentPage";
+import LayoutPage from "./views/LayoutPage";
 import MapPage from "./views/MapPage";
+import Page404 from "./views/Page404";
+import RoutePage from "./views/RoutePage";
+import RoutesPage from "./views/RoutesPage";
+import StationPage from "./views/StationPage";
+import StationsPage from "./views/StationsPage";
+import TravelPage from "./views/TravelPage";
 
 const router = createBrowserRouter(
   [
@@ -34,7 +34,7 @@ const router = createBrowserRouter(
       ],
     },
   ],
-  {     basename: "/MTR-Explorer"   },
+  { basename: "/MTR-Explorer" },
 );
 
 export default function Router() {

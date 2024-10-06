@@ -1,7 +1,7 @@
-import React from "react";
-import { Data } from "../../definitions/worker";
-import useTheme from "../hooks/useTheme";
 import { useLocalStorage } from "@uidotdev/usehooks";
+import React from "react";
+import type { Data } from "../../definitions/worker";
+import useTheme from "../hooks/useTheme";
 
 const defaultProfile = {
   currentProfile: "LPS server",
@@ -29,9 +29,5 @@ export function ConfigProvider({ children }) {
   const [config, setConfig] = useLocalStorage("config", defaultProfile);
   useTheme(config.theme);
 
-  return (
-    <ConfigContext.Provider value={[config, setConfig]}>
-      {children}
-    </ConfigContext.Provider>
-  );
+  return <ConfigContext.Provider value={[config, setConfig]}>{children}</ConfigContext.Provider>;
 }

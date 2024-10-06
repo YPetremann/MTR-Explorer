@@ -1,7 +1,5 @@
-import React, { Fragment, useState } from "react";
-import { render } from "react-dom";
-import { Stage, Layer, Rect, Text, Circle, Line } from "react-konva";
-import Konva from "konva";
+import React, { Fragment } from "react";
+import { Circle, Layer, Stage } from "react-konva";
 import { useData } from "../contexts/data.ctx";
 import useContainerDimensions from "../hooks/useContainerDimensions";
 
@@ -25,11 +23,11 @@ export default function NetworkMap({ segments }) {
               zmax: Math.max(p.zmax, c.pos.z),
             }),
             {
-              xmin: Infinity,
-              xmax: -Infinity,
-              zmin: Infinity,
-              zmax: -Infinity,
-            }
+              xmin: Number.POSITIVE_INFINITY,
+              xmax: Number.NEGATIVE_INFINITY,
+              zmin: Number.POSITIVE_INFINITY,
+              zmax: Number.NEGATIVE_INFINITY,
+            },
           )
         : {
             xmin: 0,
@@ -45,15 +43,15 @@ export default function NetworkMap({ segments }) {
     const ratio = (bb.zmax - bb.zmin) / (bb.xmax - bb.xmin);
     setHeight((canvas.current?.clientWidth ?? 0) * ratio);
   }, [data, width]);
-  segments = segments?.map((id) => data.segments[id]) ?? data.segments;
+  segments = segments?.map(id => data.segments[id]) ?? data.segments;
   return (
     <div ref={canvas}>
       <Stage
+        height={height}
+        offset={{ x: offsetX, y: offsetY }}
+        scale={{ x: scale, y: scale }}
         style={{ background: "silver" }}
         width={width}
-        height={height}
-        scale={{ x: scale, y: scale }}
-        offset={{ x: offsetX, y: offsetY }}
       >
         <Layer>
           {/*segments.map((sg) => {
@@ -80,20 +78,10 @@ export default function NetworkMap({ segments }) {
                 />
               ));
           })*/}
-          {data.stations.map((st) => (
+          {data.stations.map(st => (
             <Fragment key={st.index}>
-              <Circle
-                x={st.pos[0]}
-                y={st.pos[1]}
-                radius={3 / scale}
-                fill={"black"}
-              />
-              <Circle
-                x={st.pos[0]}
-                y={st.pos[1]}
-                radius={2 / scale}
-                fill={"white"}
-              />
+              <Circle fill={"black"} radius={3 / scale} x={st.pos[0]} y={st.pos[1]} />
+              <Circle fill={"white"} radius={2 / scale} x={st.pos[0]} y={st.pos[1]} />
             </Fragment>
           ))}
         </Layer>

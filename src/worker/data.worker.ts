@@ -1,11 +1,5 @@
-import type {
-  Data,
-  Platform,
-  Route,
-  Segment,
-  Station,
-} from "../../definitions/worker";
-import { RawData } from "../../definitions/data";
+import type { RawData } from "../../definitions/data";
+import type { Data, Platform, Route, Segment, Station } from "../../definitions/worker";
 //MARK:- VARS
 
 const workerData: Data = {
@@ -35,19 +29,7 @@ const STATION_ATTRS = [
   "name",
   "pattern",
 ];
-const PLATFORM_ATTRS = [
-  "index",
-  "from",
-  "to",
-  "prev",
-  "next",
-  "dim",
-  "pos",
-  "vertical",
-  "station",
-  "route",
-  "id",
-];
+const PLATFORM_ATTRS = ["index", "from", "to", "prev", "next", "dim", "pos", "vertical", "station", "route", "id"];
 const ROUTE_ATTRS = [
   "index",
   "dim",
@@ -63,22 +45,13 @@ const ROUTE_ATTRS = [
   "name",
   "pattern",
 ];
-const SEGMENT_ATTRS = [
-  "index",
-  "route",
-  "from",
-  "to",
-  "distance",
-  "duration",
-  "prev",
-  "next",
-];
+const SEGMENT_ATTRS = ["index", "route", "from", "to", "distance", "duration", "prev", "next"];
 const LANG_PREFERED = 1;
 const WALK_SPEED = 4.137 / 20; // bloc/tick
 const WAIT_DELAY = 20 * 90; // 60 seconds
 
 //MARK:- UTILS
-const toColor = (n) => "#" + n.toString(16).padStart(6, "0");
+const toColor = n => "#" + n.toString(16).padStart(6, "0");
 export function locale(text) {
   if (text === undefined) return "";
   if (typeof text === "string") return text;
@@ -238,14 +211,13 @@ function populateWorkerData(raw: RawData): Data {
   for (const dim of raw) {
     for (const rt of Object.values(dim.routes)) workerData.routes.push(rt);
     for (const st of Object.values(dim.stations)) workerData.stations.push(st);
-    for (const pl of Object.values(dim.positions))
-      workerData.platforms.push(pl);
+    for (const pl of Object.values(dim.positions)) workerData.platforms.push(pl);
   }
   return workerData;
 }
 function updateStationConnections(data: Data) {
   for (const st of data.stations) {
-    st.connections = st.connections.map((id) => indexes.stations.get(id));
+    st.connections = st.connections.map(id => indexes.stations.get(id));
   }
 }
 function updatePlatformStation(data: Data) {
@@ -260,7 +232,7 @@ function updateRoutePlatforms(data: Data) {
 }
 function updateRouteStations(data: Data) {
   for (const rt of data.routes) {
-    rt.stations = rt.platforms.map((id) => data.platforms[id]?.station);
+    rt.stations = rt.platforms.map(id => data.platforms[id]?.station);
   }
 }
 function updatePlatformRoutes(data: Data) {
@@ -292,10 +264,7 @@ function createRouteSegments(data: Data) {
       if (index == 0) continue;
       const fromPlatform = data.platforms[route.platforms[index - 1]];
       const toPlatform = data.platforms[route.platforms[index]];
-      const distance = Math.hypot(
-        fromPlatform.pos.x - toPlatform.pos.x,
-        fromPlatform.pos.z - toPlatform.pos.z
-      );
+      const distance = Math.hypot(fromPlatform.pos.x - toPlatform.pos.x, fromPlatform.pos.z - toPlatform.pos.z);
       const duration = route.durations[index - 1] || distance / WALK_SPEED;
       //*
       data.segments.push({
@@ -351,10 +320,7 @@ function createRouteSegments(data: Data) {
 function createPlatformSegments(data: Data) {
   for (const platform of data.platforms) {
     const station = data.stations[platform.station];
-    const distance = Math.hypot(
-      platform.pos.x - station.pos.x,
-      platform.pos.z - station.pos.z
-    );
+    const distance = Math.hypot(platform.pos.x - station.pos.x, platform.pos.z - station.pos.z);
     const duration = (distance * 2) / WALK_SPEED;
     data.segments.push({
       index: data.segments.length,
@@ -384,10 +350,7 @@ function createStationSegments(data: Data) {
     for (const id of fromStation.connections) {
       const toStation = data.stations[id];
       if (!toStation) return;
-      const distance = Math.hypot(
-        fromStation.pos.x - toStation.pos.x,
-        fromStation.pos.z - toStation.pos.z
-      );
+      const distance = Math.hypot(fromStation.pos.x - toStation.pos.x, fromStation.pos.z - toStation.pos.z);
       const duration = (distance * 2) / WALK_SPEED;
 
       data.segments.push({
@@ -418,7 +381,7 @@ function getThing(obj, type) {
   }
 }
 function linkSegmentToThings(data: Data) {
-  data.segments.forEach((segment) => {
+  data.segments.forEach(segment => {
     getThing(segment.from).next.push(segment.index);
     getThing(segment.to).prev.push(segment.index);
   });
@@ -428,13 +391,13 @@ function linkSegmentsTogether() {
     const index = segment.index;
     const prev = getThing(segment.from).prev;
     const next = getThing(segment.to).next;
-    segment.prev = prev.filter((id) => id !== index);
-    segment.next = next.filter((id) => id !== index);
+    segment.prev = prev.filter(id => id !== index);
+    segment.next = next.filter(id => id !== index);
   }
 }
 
 function reorderAttributes(objs, attrs: string[]) {
-  objs.forEach(function (entry, index, array) {
+  objs.forEach((entry, index, array) => {
     const n = {};
     for (const key of attrs)
       if (key in entry) {
@@ -473,7 +436,7 @@ const Scoring = {
     const increment = routeCur < 0 || routeCur !== routePrev ? 1 : 0;
     return calc.prev_score + increment;
   },
-  uniform: (calc) => calc.prev_score + 1,
+  uniform: calc => calc.prev_score + 1,
 };
 /**
  * Pathfinding algorithm to find the shortest path going through every stations.
@@ -488,7 +451,7 @@ const Scoring = {
 export function calcPath(nodes: string[], mode: Mode = "distance") {
   console.time("calcPath");
   const stations = workerData.stations;
-  nodes = nodes.map((id) => stations.findIndex((st) => st.id === id));
+  nodes = nodes.map(id => stations.findIndex(st => st.id === id));
   const parts = nodes.slice(1).map((t, i) => [nodes[i], t]);
   const scoring = Scoring[mode] ?? Scoring.uniform;
   const list = parts.map(([f, t]) => calcPathGen(f, t, scoring));
@@ -501,17 +464,13 @@ function resetCalcScore() {
   for (let i = 0; i < expectedLen; i++) {
     const calc = (calcs[i] = calcs[i] ?? {});
     calc.wait = 0;
-    calc.prev = Infinity;
-    calc.next = Infinity;
-    calc.prev_score = Infinity;
-    calc.next_score = Infinity;
+    calc.prev = Number.POSITIVE_INFINITY;
+    calc.next = Number.POSITIVE_INFINITY;
+    calc.prev_score = Number.POSITIVE_INFINITY;
+    calc.next_score = Number.POSITIVE_INFINITY;
   }
 }
-function calcPathGen(
-  from,
-  to,
-  scoring: (calc: Calc, segment: Segment) => number
-) {
+function calcPathGen(from, to, scoring: (calc: Calc, segment: Segment) => number) {
   const st_from = workerData.stations[from];
   const st_to = workerData.stations[to];
   resetCalcScore();
@@ -544,9 +503,7 @@ function calcPathGen(
   }
 
   // travel back from destination to origin
-  let prev = st_to.prev
-    .toSorted((a, b) => calcs[a].next_score - calcs[b].next_score)
-    .at(0);
+  let prev = st_to.prev.toSorted((a, b) => calcs[a].next_score - calcs[b].next_score).at(0);
   const chain = [];
   while (prev !== -1) {
     const seg = structuredClone(workerData.segments[prev]);

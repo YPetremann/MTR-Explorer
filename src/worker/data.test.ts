@@ -1,6 +1,6 @@
-import * as worker from "./data.worker";
+import type { Segment } from "../../definitions/worker";
 import json from "./data.min.json";
-import { Segment } from "../../definitions/worker";
+import * as worker from "./data.worker";
 
 function displayPath(path: Segment[]) {
   console.log("Path:");
@@ -16,13 +16,8 @@ describe("data", () => {
 
   it("calcPath", async () => {
     const path = worker.calcPath(
-      [
-        "7656000097055420305",
-        "-7959022631105399792",
-        "-5431161251827272709",
-        "946998934114483299",
-      ],
-      "distance"
+      ["7656000097055420305", "-7959022631105399792", "-5431161251827272709", "946998934114483299"],
+      "distance",
     );
     displayPath(path);
   });
@@ -37,7 +32,7 @@ describe("data", () => {
         "-8712852306598876069",
         "-8953900199947314003",
       ],
-      "distance"
+      "distance",
     );
     displayPath(path);
   });

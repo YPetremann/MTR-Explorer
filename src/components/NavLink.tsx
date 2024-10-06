@@ -19,7 +19,7 @@ export default function NavLink({
           className,
           isPending && classNamePending,
           isActive && classNameActive,
-          isTransitioning && classNameTransitioning
+          isTransitioning && classNameTransitioning,
         )
       }
     >

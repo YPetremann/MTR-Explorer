@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { Link } from "react-router-dom";
 import { useData } from "../contexts/data.ctx";
 import { lang } from "../utils/lang";
 
@@ -18,10 +18,7 @@ export default function StationLink({ station, index }: StationLinkProps) {
   const st = useDataStation(station?.index ?? index);
   if (!st) return;
   return (
-    <Link
-      className="inline-flex row gap-1 items-baseline text-link-700"
-      to={`/station/${st.index}`}
-    >
+    <Link className="inline-flex row gap-1 items-baseline text-link-700" to={`/station/${st.index}`}>
       <Icon icon="mdi:town-hall" style={{ color: st.color }} />
       <span className="break-words">{lang(st.name)}</span>
     </Link>

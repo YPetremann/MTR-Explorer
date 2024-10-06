@@ -1,8 +1,7 @@
 import React from "react";
-import YAML from "yaml";
-import { useData } from "../contexts/data.ctx";
 import Header from "../components/Header";
 import Main from "../components/Main";
+import { useData } from "../contexts/data.ctx";
 
 export default function DebugPage() {
   const data = useData();
@@ -12,8 +11,8 @@ export default function DebugPage() {
         <table className="border-separate	border-spacing-x-4 my-4 -mx-4">
           <thead>
             <tr>
-              {Object.keys(data).map((key) => (
-                <th key={key} className="capitalize">
+              {Object.keys(data).map(key => (
+                <th className="capitalize" key={key}>
                   {key}
                 </th>
               ))}

@@ -1,8 +1,8 @@
 import React from "react";
 import { useData } from "../contexts/data.ctx";
 import dataWorker from "../worker/data";
-import RouteLink from "./RouteLink";
 import DotStation from "./DotStation";
+import RouteLink from "./RouteLink";
 import Time from "./Time";
 import "./Travel.scss";
 
@@ -40,7 +40,7 @@ export default function Travel({ points, algo }) {
     function calcPath() {
       if (!data.stations.length) return;
       if (!algo && !points) return;
-      if (points.filter((e) => e).length < 2) return;
+      if (points.filter(e => e).length < 2) return;
       setResult();
       dataWorker.calcPath(points, algo).then(setResult);
     }
@@ -52,12 +52,7 @@ export default function Travel({ points, algo }) {
   return (
     <div>
       <label>
-        <input
-          type="checkbox"
-          checked={advanced}
-          onChange={() => setAdvanced((e) => !e)}
-        />{" "}
-        Show details
+        <input checked={advanced} onChange={() => setAdvanced(e => !e)} type="checkbox" /> Show details
       </label>
       <div>
         {result.map((part, i) => (
@@ -67,23 +62,15 @@ export default function Travel({ points, algo }) {
               const route = data.routes[seg.route.index];
               return (
                 <div key={j}>
-                  {j === 0 && <DotStation major index={seg.from.index} />}
+                  {j === 0 && <DotStation index={seg.from.index} major={true} />}
                   {j > 0 &&
                     (advanced || j < part.length - 1) &&
                     seg.route.index !== -2 &&
-                    seg.from.index !== prev.from.index && (
-                      <DotStation
-                        index={data.platforms[seg.from.index].station}
-                      />
-                    )}
+                    seg.from.index !== prev.from.index && <DotStation index={data.platforms[seg.from.index].station} />}
 
                   {(advanced || seg.route.index >= 0) && (
-                    <div
-                      className={`Line Line--${seg.route.type}`}
-                      style={{ "--color": route?.color }}
-                    >
-                      <RouteLink index={seg.route.index} />{" "}
-                      {advanced && <Time ticks={seg.duration} />}
+                    <div className={`Line Line--${seg.route.type}`} style={{ "--color": route?.color }}>
+                      <RouteLink index={seg.route.index} /> {advanced && <Time ticks={seg.duration} />}
                       {advanced && !!seg.station && (
                         <>
                           <br />
@@ -92,9 +79,7 @@ export default function Travel({ points, algo }) {
                       )}
                     </div>
                   )}
-                  {j === part.length - 1 && (
-                    <DotStation major index={seg.to.index} />
-                  )}
+                  {j === part.length - 1 && <DotStation index={seg.to.index} major={true} />}
                 </div>
               );
             })}

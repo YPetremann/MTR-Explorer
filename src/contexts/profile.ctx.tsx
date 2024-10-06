@@ -4,11 +4,11 @@ export default function useProfile(): Data {
   const [config, setConfig] = useConfig();
 
   // update the profile
-  const update = (val) => {
+  const update = val => {
     // transform the value to a function
     const fn = typeof val === "function" ? val : () => val;
 
-    setConfig((config) => {
+    setConfig(config => {
       const { currentProfile, profiles } = config;
       const profile = profiles[currentProfile];
       profiles[currentProfile] = fn(profile);
@@ -16,24 +16,21 @@ export default function useProfile(): Data {
     });
   };
 
-  const change = (value) =>
-    setConfig((cfg) => ({ ...cfg, currentProfile: value }));
+  const change = value => setConfig(cfg => ({ ...cfg, currentProfile: value }));
 
   const create = () => {
     const currentProfile = prompt("Enter the new name for this profile");
     if (!currentProfile) return;
-    setConfig((cfg) => {
+    setConfig(cfg => {
       const profiles = { ...cfg.profiles, [currentProfile]: {} };
       return { ...cfg, currentProfile, profiles };
     });
   };
 
   function remove() {
-    const shouldDelete = confirm(
-      "Are you sure you want to delete this profile?"
-    );
+    const shouldDelete = confirm("Are you sure you want to delete this profile?");
     if (!shouldDelete) return;
-    setConfig((cfg) => {
+    setConfig(cfg => {
       const name = cfg.currentProfile;
       const index = Object.keys(cfg.profiles).indexOf(name);
       const profiles = cfg.profiles;
@@ -49,7 +46,7 @@ export default function useProfile(): Data {
   function rename() {
     const currentProfile = prompt("Enter the new name for this profile");
     if (!currentProfile) return;
-    setConfig((cfg) => {
+    setConfig(cfg => {
       const old = cfg.currentProfile;
       const { [old]: profile, ...oldProfiles } = cfg.profiles;
       const profiles = { [currentProfile]: profile, ...oldProfiles };

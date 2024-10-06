@@ -75,10 +75,7 @@ export default function ConfigPage() {
             <li>- A platform or exit is inapropriatly indicated</li>
             <li>- A train always delay between two stations</li>
           </ul>
-          <p>
-            Declaring incident will have repercution on the precalculation and
-            on the pathfinding.
-          </p>
+          <p>Declaring incident will have repercution on the precalculation and on the pathfinding.</p>
           <p>Declaring incident will ease reporting them to server admins.</p>
         </section>
       </Main>
