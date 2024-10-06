@@ -56,8 +56,8 @@ export function ConfigPage() {
             <span className="w-[240px]">Profile</span>
             <div className="flex grow">
               <Select
-                id="cfgProfile"
                 className="grow"
+                id="cfgProfile"
                 onChange={ev => profile.change(ev.target.value)}
                 value={profile.name}
               >
@@ -83,8 +83,8 @@ export function ConfigPage() {
             <span className="w-[240px]">Data URL</span>
             <div className="flex grow">
               <Input
-                id="cfgSMDurl"
                 className="grow"
+                id="cfgSMDurl"
                 onChange={ev => setSystemMapDataUrl(ev.target.value)}
                 value={systemMap?.dataUrl ?? ""}
               />

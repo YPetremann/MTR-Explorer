@@ -1,6 +1,6 @@
 import type { Segment } from "../../definitions/worker";
 import { json } from "./data.min.json";
-import { load, calcPath } from "./data.worker";
+import { calcPath, load } from "./data.worker";
 
 function displayPath(path: Segment[]) {
   console.info("Path:");

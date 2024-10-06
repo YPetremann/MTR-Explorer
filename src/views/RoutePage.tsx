@@ -28,7 +28,7 @@ export function RoutePage() {
           <div className="col-start-1 row-start-1 m-[5px] border-l-[7px]" style={{ borderColor: route.color }} />
           <div className="col-start-1 row-start-1">
             {route.stations.map((station, index, a) => (
-              <DotStation key={index} index={station} minor={index > 0 && index < a.length - 1} />
+              <DotStation index={station} key={index} minor={index > 0 && index < a.length - 1} />
             ))}
           </div>
         </div>

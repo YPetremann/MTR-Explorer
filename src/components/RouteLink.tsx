@@ -1,9 +1,9 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link } from "react-router-dom";
+import type { Route } from "../../definitions/worker";
 import { useData } from "../contexts/data.ctx";
 import { contrast } from "../utils/contrast";
 import { lang } from "../utils/lang";
-import type { Route } from "../../definitions/worker";
 
 interface RouteLinkProps {
   route: Route;
@@ -27,14 +27,15 @@ function getRouteIcon(type) {
   return Icons[type] ?? Icons.default;
 }
 
+const staticRoutes = [
+  undefined,
+  { name: "Walk", color: "white", type: "walk" },
+  { name: "Wait", color: "white", type: "wait" },
+];
+
 function useDataRoute(index) {
   const data = useData();
-  const route =
-    index === -1
-      ? { name: "Walk", color: "white", type: "walk" }
-      : index === -2
-        ? { name: "Wait", color: "white", type: "wait" }
-        : data.routes[index];
+  const route = index < 0 ? staticRoutes[-index] : data.routes[index];
   if (!route) return;
 
   return {
