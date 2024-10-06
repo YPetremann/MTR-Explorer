@@ -5,7 +5,7 @@ import eslint from "vite-plugin-eslint";
 //import fileFormatter from "./tools/eslintFileFormatter";
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/MTR-Helper/",
+  base: "/MTR-Explorer/",
   plugins: [
     react(),
     eslint({

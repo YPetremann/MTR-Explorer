@@ -1,9 +1,9 @@
 {
-  "name": "mtr-helper",
+  "name": "mtr-explorer",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://ypetremann.github.io/MTR-Helper/",
+  "homepage": "https://ypetremann.github.io/MTR-Explorer/",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",

@@ -34,9 +34,7 @@ const router = createBrowserRouter(
       ],
     },
   ],
-  {
-    basename: "/MTR-Helper",
-  }
+  {     basename: "/MTR-Explorer"   },
 );
 
 export default function Router() {
