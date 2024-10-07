@@ -24,7 +24,7 @@ const lightTheme = {
     neutral: getColors(colors.slate, 900),
   },
   backgroundColor: {
-    menu: getColors(colors.pink, 900),
+    menu: "#b42249",
     main: "white",
     header: getColors(colors.slate, 200),
     neutral: getColors(colors.slate, 100),
