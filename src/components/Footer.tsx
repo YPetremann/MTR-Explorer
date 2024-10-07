@@ -1,12 +1,24 @@
+import { Icon } from "./Icon";
+
 export function Footer() {
   return (
     <footer className="bg-header p-2 text-center text-header">
       <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/">
-        <a href="https://github.com/YPetremann/MTR-Explorer/" property="dct:title" rel="cc:attributionURL">
+        <a
+          href="https://github.com/YPetremann/MTR-Explorer/"
+          property="dct:title"
+          rel="cc:attributionURL noreferrer"
+          target="_blank"
+        >
           MTR Explorer
         </a>
         <span> by </span>
-        <a href="https://github.com/YPetremann/" property="cc:attributionName" rel="cc:attributionURL dct:creator">
+        <a
+          href="https://github.com/YPetremann/"
+          property="cc:attributionName"
+          rel="cc:attributionURL dct:creator noreferrer"
+          target="_blank"
+        >
           YPetremann
         </a>
         <span> is licensed under </span>
@@ -17,26 +29,10 @@ export function Footer() {
           target="_blank"
         >
           <span> CC BY-NC-SA 4.0 </span>
-          <img
-            alt=""
-            className="ml-[3px] inline h-[22px] align-text-bottom"
-            src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"
-          />
-          <img
-            alt=""
-            className="ml-[3px] inline h-[22px] align-text-bottom"
-            src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"
-          />
-          <img
-            alt=""
-            className="ml-[3px] inline h-[22px] align-text-bottom"
-            src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"
-          />
-          <img
-            alt=""
-            className="ml-[3px] inline h-[22px] align-text-bottom"
-            src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"
-          />
+          <Icon icon="ri:creative-commons-fill" className="ml-1 align-text-top text-xl" />
+          <Icon icon="ri:creative-commons-by-fill" className="ml-1 align-text-top text-xl" />
+          <Icon icon="ri:creative-commons-nc-fill" className="ml-1 align-text-top text-xl" />
+          <Icon icon="ri:creative-commons-sa-fill" className="ml-1 align-text-top text-xl" />
         </a>
       </p>
     </footer>
