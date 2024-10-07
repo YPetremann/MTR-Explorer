@@ -47,7 +47,7 @@ export default defineConfig({
       manifest: {
         theme_color: "#b42249",
         background_color: "#b42249",
-        display: "standalone",
+        display: "minimal-ui",
         scope: "/MTR-Explorer/",
         start_url: "/MTR-Explorer/",
         short_name: "MTR EX",
