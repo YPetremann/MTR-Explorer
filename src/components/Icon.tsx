@@ -1,4 +1,5 @@
 import { disableCache, enableCache, loadIcons } from "iconify-icon";
+import { classnames } from "../utils/classnames";
 
 disableCache("all");
 enableCache("session");
@@ -40,9 +41,9 @@ loadIcons([
   "ri:creative-commons-sa-fill",
 ]);
 
-export function Icon({ icon, mode, inline, width, height, flip, rotate, ...rest }) {
+export function Icon({ icon, mode, inline, width, height, flip, rotate, className, ...rest }) {
   return (
-    <span {...rest}>
+    <span className={classnames("leading-none", className)} {...rest}>
       <iconify-icon
         flip={flip}
         height={height}
