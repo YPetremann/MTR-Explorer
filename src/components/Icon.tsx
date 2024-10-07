@@ -34,6 +34,10 @@ loadIcons([
   "mdi:walk",
   "mdi:white-balance-sunny",
   "mdi:wrench",
+  "ri:creative-commons-fill",
+  "ri:creative-commons-by-fill",
+  "ri:creative-commons-nc-fill",
+  "ri:creative-commons-sa-fill",
 ]);
 
 export function Icon({ icon, mode, inline, width, height, flip, rotate, ...rest }) {
