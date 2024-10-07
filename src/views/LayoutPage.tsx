@@ -2,8 +2,8 @@ import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import { Footer } from "../components/Footer";
-import { MainMenu } from "../components/MainMenu";
 import { Icon } from "../components/Icon";
+import { MainMenu } from "../components/MainMenu";
 import { classnames } from "../utils/classnames";
 
 export function LayoutPage() {
