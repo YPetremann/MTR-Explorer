@@ -8,6 +8,7 @@ import { minimal2023Preset as preset } from '@vite-pwa/assets-generator/config'
 import { ViteMinifyPlugin } from 'vite-plugin-minify'
 
 function manualChunks(id,{getModuleIds, getModuleInfo}) {
+  return
   if(id.includes('/node_modules/react-dom')) return "react-dom"
 	if (id.includes('/node_modules/')) return "vendor"
   if (id.includes('/node_modules/')) {
