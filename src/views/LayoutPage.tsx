@@ -29,7 +29,7 @@ export function LayoutPage() {
   return (
     <div {...handlers} className="flex min-h-full flex-col bg-main text-main">
       <MainMenu />
-      <div className="absolute top-1/2 right-0 left-0 flex justify-between overflow-hidden p-4">
+      <div className="pointer-events-none absolute top-1/2 right-0 left-0 flex justify-between overflow-hidden p-4">
         <div
           className={classnames(
             "relative flex h-10 w-10 items-center justify-center rounded-full bg-neutral-500 transition-transform",
