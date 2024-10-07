@@ -1,5 +1,5 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { NavLink } from "../components/NavLink";
+import { Icon } from "./Icon";
 const navigation = [
   { href: "/travel", name: "Travel", icon: "mdi:train" },
   { href: "/map", name: "Map", icon: "mdi:map" },

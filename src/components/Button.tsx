@@ -1,5 +1,5 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { classnames } from "../utils/classnames";
+import { Icon } from "./Icon";
 
 export function Button({ className, icon, text, children, active, ...props }) {
   return (

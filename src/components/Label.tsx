@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
+import { Icon } from "./Icon";
 
 export function Label({ icon, text, children }) {
   return (

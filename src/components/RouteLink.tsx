@@ -1,9 +1,9 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link } from "react-router-dom";
 import type { Route } from "../../definitions/worker";
 import { useData } from "../contexts/data.ctx";
 import { contrast } from "../utils/contrast";
 import { lang } from "../utils/lang";
+import { Icon } from "./Icon";
 
 interface RouteLinkProps {
   route: Route;

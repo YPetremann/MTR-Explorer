@@ -1,5 +1,5 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { Header } from "../components/Header";
+import { Icon } from "../components/Icon";
 import { Main } from "../components/Main";
 import { NavLink } from "../components/NavLink";
 const navigation = [

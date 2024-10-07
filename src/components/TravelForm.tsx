@@ -1,8 +1,8 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
 import { useData } from "../contexts/data.ctx";
 import { lang } from "../utils/lang";
 import { Button } from "./Button";
+import { Icon } from "./Icon";
 import { Label } from "./Label";
 import { SearchSelect } from "./SearchSelect";
 import { Select } from "./Select";

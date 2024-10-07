@@ -1,8 +1,8 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link } from "react-router-dom";
 import type { Station } from "../../definitions/worker";
 import { useData } from "../contexts/data.ctx";
 import { lang } from "../utils/lang";
+import { Icon } from "./Icon";
 
 interface StationLinkProps {
   station: Station;

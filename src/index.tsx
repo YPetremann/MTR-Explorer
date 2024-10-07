@@ -1,4 +1,3 @@
-import { enableCache } from "@iconify/react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -11,7 +10,7 @@ import { Router } from "./Router.tsx";
 import { Stats } from "./components/Stats.tsx";
 
 registerSW({ immediate: true });
-enableCache("session");
+
 const rootEl = document.getElementById("root");
 if (!rootEl) throw new Error("Root element not found");
 createRoot(rootEl).render(
