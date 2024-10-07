@@ -85,9 +85,8 @@ const pass = () => undefined;
 export async function load(source, progressCb = pass) {
   try {
     console.time("fetch");
-    progressCb([0.5, "Fetching data..."]);
+    progressCb([0.1, "Fetching data..."]);
     const dims = await getDimensionsFromSource(source);
-
     console.timeEnd("fetch");
     console.time("processing");
 

@@ -5,14 +5,17 @@ import checker from "vite-plugin-checker";
 import iconify from "@tomjs/vite-plugin-iconify";
 import { VitePWA } from "vite-plugin-pwa";
 import { minimal2023Preset as preset } from '@vite-pwa/assets-generator/config'
-import inlineSource from "vite-plugin-inline-source";
 import { ViteMinifyPlugin } from 'vite-plugin-minify'
+import mkcert from 'vite-plugin-mkcert'
 
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/MTR-Explorer/",
+  server: { https: true, host: true },
+  preview: { https: true, host: true },
   plugins: [
+    mkcert(),
     react(),
     checker({
       typescript: true,
@@ -22,9 +25,9 @@ export default defineConfig({
     }),
     comlink(),
     VitePWA({
-      injectRegister: null,
+      registerType:"autoUpdate",
       devOptions:{ enabled: true },
-      workbox: { globPatterns: ["**/*"] },
+      workbox: { globPatterns: ['**/*.{js,css,html,ico,png,svg}'] },
       includeAssets: ["**/*"],
       pwaAssets:{
         preset,
@@ -34,17 +37,21 @@ export default defineConfig({
         injectThemeColor:false,
       },
       manifest: {
-        theme_color: "#831843",
-        background_color: "#831843",
-        display: "minimal-ui",
+        theme_color: "#b42249",
+        background_color: "#b42249",
+        display: "standalone",
         scope: "/MTR-Explorer/",
         start_url: "/MTR-Explorer/",
         short_name: "MTR EX",
         description: "Explore the MTR network",
         name: "MTR Explorer",
+        "shortcuts" : [
+          { "name": "Travel", "url": "/MTR-Explorer/travel" },
+          { "name": "Routes", "url": "/MTR-Explorer/routes" },
+          { "name": "Stations", "url": "/MTR-Explorer/stations" }
+        ],
       },
     }),
-    inlineSource(),
     ViteMinifyPlugin(),
     iconify({
       local: {

@@ -6,19 +6,12 @@ import { StationList } from "./components/StationList.tsx";
 import { ConfigProvider } from "./contexts/config.ctx.tsx";
 import { DataProvider } from "./contexts/data.ctx.tsx";
 
+import { registerSW } from "virtual:pwa-register";
 import { Router } from "./Router.tsx";
 import { Stats } from "./components/Stats.tsx";
-import { registerSW } from "virtual:pwa-register";
 
+registerSW({ immediate: true });
 enableCache("session");
-const updateSW = registerSW({
-  onNeedRefresh() {
-    // if (confirm("New content available. Reload?")) {
-    updateSW(true);
-    // }
-  },
-});
-
 const rootEl = document.getElementById("root");
 if (!rootEl) throw new Error("Root element not found");
 createRoot(rootEl).render(

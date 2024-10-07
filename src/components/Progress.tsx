@@ -24,10 +24,11 @@ export function Progress({ message, value, size }) {
         >
           <div
             className={classnames("h-full bg-blue-500", value === -1 && "bg-red-500")}
-            style={{ width: `${(value >= 0 ? tweened - i : 1) * 100}%` }}
+            style={{ width: `${(value >= 0 ? clamp(0, tweened - i, 1) : 1) * 100}%` }}
           />
         </div>
       ))}
     </div>
   );
 }
+const clamp = (min, value, max) => Math.min(Math.max(value, min), max);

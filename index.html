@@ -4,17 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="color-scheme" content="dark light" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#831843">
+    <meta name="theme-color" content="#b42249">
     <title>MTR Explorer</title>
+    <meta name="description" content="Explore the MTR network" />
     <link rel="manifest" href="/MTR-Explorer/manifest.webmanifest">
     <link rel="icon" href="/MTR-Explorer/favicon.ico" sizes="48x48">
     <link rel="icon" href="/MTR-Explorer/favicon.svg" sizes="any" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/MTR-Explorer/apple-touch-icon-180x180.png">
     <link rel="stylesheet" href="/src/index.css" />
-    <script inline-source type="text/javascript" src="/src/github-index.ts"></script>
+    <script type="text/javascript" >
+      if (window.location.search[1] === "/") {
+        const decoded = window.location.search
+          .slice(1)
+          .split("&")
+          .map(s => s.replace(/~and~/g, "&"))
+          .join("?");
+        const base = window.location.pathname.slice(0, -1);
+        window.history.replaceState(null, null, `${base}${decoded}${location.hash}`);
+      }
+    </script>
+    <script type="module" src="/src/index.tsx"></script>
   </head>
   <body class="h-full">
     <div class="h-full" id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>
