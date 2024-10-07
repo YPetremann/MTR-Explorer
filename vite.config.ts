@@ -21,8 +21,8 @@ function manualChunks(id,{getModuleIds, getModuleInfo}) {
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/MTR-Explorer/",
-  server: { https: true, host: true },
-  preview: { https: true, host: true },
+  server: { host: true },
+  preview: { host: true },
   plugins: [
     react(),
     comlink(),
@@ -35,7 +35,6 @@ export default defineConfig({
     }),
     VitePWA({
       registerType:"autoUpdate",
-      devOptions:{ enabled: true },
       workbox: { globPatterns: ['**/*.{js,css,html,ico,png,svg}'] },
       includeAssets: ["**/*"],
       pwaAssets:{
