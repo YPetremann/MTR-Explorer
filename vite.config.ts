@@ -6,8 +6,16 @@ import iconify from "@tomjs/vite-plugin-iconify";
 import { VitePWA } from "vite-plugin-pwa";
 import { minimal2023Preset as preset } from '@vite-pwa/assets-generator/config'
 import { ViteMinifyPlugin } from 'vite-plugin-minify'
-import mkcert from 'vite-plugin-mkcert'
 
+function manualChunks(id,{getModuleIds, getModuleInfo}) {
+  if(id.includes('/node_modules/react-dom')) return "react-dom"
+	if (id.includes('/node_modules/')) return "vendor"
+  if (id.includes('/node_modules/')) {
+    const pkg = id.match(/\/node_modules\/(.*?)\//)[1];
+    console.log(id, pkg);
+		return pkg;
+	}
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,15 +23,15 @@ export default defineConfig({
   server: { https: true, host: true },
   preview: { https: true, host: true },
   plugins: [
-    mkcert(),
     react(),
-    checker({
-      typescript: true,
-      eslint: { lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"', useFlatConfig: true },
-      stylelint: { lintCommand: "stylelint ./src/**/*.{scss,css}" },
-      biome: true,
-    }),
     comlink(),
+    iconify({
+      local: {
+        sets: ["mdi", "material-symbols"],
+        path: "iconify@{version}",
+        copy: true,
+      },
+    }),
     VitePWA({
       registerType:"autoUpdate",
       devOptions:{ enabled: true },
@@ -52,16 +60,16 @@ export default defineConfig({
         ],
       },
     }),
-    ViteMinifyPlugin(),
-    iconify({
-      local: {
-        sets: ["mdi", "material-symbols"],
-        path: "iconify@{version}",
-        copy: true,
-      },
+    ViteMinifyPlugin({}),
+    checker({
+      typescript: true,
+      eslint: { lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"', useFlatConfig: true },
+      stylelint: { lintCommand: "stylelint ./src/**/*.{scss,css}" },
+      biome: true,
     }),
   ],
   worker: { plugins: () => [comlink()] },
+  build:{ rollupOptions:{ output:{ manualChunks } } },
   css: {
     preprocessorOptions: {
       scss: {
