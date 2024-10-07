@@ -16,6 +16,7 @@ export function LayoutPage() {
         if (Math.abs(ev.deltaX) < 50 && Math.abs(ev.deltaY) < 50) return setSwipe(null);
         if (ev.dir === "Left") navigate(1);
         if (ev.dir === "Right") navigate(-1);
+        setSwipe(null);
       },
       onSwiping: ev => {
         if (Math.abs(ev.deltaX) < 50 && Math.abs(ev.deltaY) < 50) return setSwipe(null);
