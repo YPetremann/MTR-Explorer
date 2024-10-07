@@ -1,8 +1,8 @@
+import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useSwipeable } from "react-swipeable";
 import { Footer } from "../components/Footer";
 import { MainMenu } from "../components/MainMenu";
-import { useSwipeable } from "react-swipeable";
-import React from "react";
 import { Icon } from "../components/Icon";
 import { classnames } from "../utils/classnames";
 
