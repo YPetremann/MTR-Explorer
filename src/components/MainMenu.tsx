@@ -8,7 +8,7 @@ const navigation = [
   { href: "/incidents", name: "Incidents", icon: "mdi:alert" },
   { href: "/config", name: "Config", icon: "mdi:wrench" },
 ];
-if (import.meta.env.DEV) navigation.push({ href: "/debug", name: "Debug", icon: "mdi:chart-arc" });
+if (import.meta.env.MODE === "development") navigation.push({ href: "/debug", name: "Debug", icon: "mdi:chart-arc" });
 export function MainMenu() {
   return (
     <div className="flex flex-col flex-wrap bg-menu p-2 text-menu md:flex-row">

@@ -5,18 +5,25 @@ import iconify from "@tomjs/vite-plugin-iconify";
 import { VitePWA } from "vite-plugin-pwa";
 import { minimal2023Preset as preset } from "@vite-pwa/assets-generator/config";
 import { ViteMinifyPlugin } from "vite-plugin-minify";
-
+import mkcert from'vite-plugin-mkcert'
+import fs from "fs";
 // https://vitejs.dev/config/
-export default defineConfig(async ({ mode }) => {
+export default defineConfig(async ({ mode, command,...args }) => {
   return {
     base: "/MTR-Explorer/",
     server: { host: true },
-    preview: { host: true },
+    preview: { 
+      https:{
+        cert: fs.readFileSync("certs/cert.pem"),
+        key: fs.readFileSync("certs/dev.pem"),
+      }, 
+      host: true
+    },
     plugins: [
       react(),
       comlink(),
       iconify({
-        local: {          sets: ["mdi", "material-symbols", "ri"],          path: "iconify@{version}",          copy: true,        },
+        local: { sets: ["mdi", "material-symbols", "ri"], path: "iconify@{version}", copy: true },
       }),
       VitePWA({
         registerType: "autoUpdate",
@@ -46,12 +53,20 @@ export default defineConfig(async ({ mode }) => {
         },
       }),
       ViteMinifyPlugin({}),
-      mode !== "production" &&
+      command === "build" && mkcert({
+        savePath: './certs',
+        autoUpgrade: true,
+        hosts: ['localhost'],
+        force: true,
+      }),
+      command !== "build" &&
         (await import("vite-plugin-checker")).default({
           typescript: true,
           eslint: { lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"', useFlatConfig: true },
           stylelint: { lintCommand: "stylelint ./src/**/*.{scss,css}" },
           biome: true,
+          overlay:{ initialIsOpen: "error" },
+          terminal:false,
         }),
     ],
     worker: { plugins: () => [comlink()] },

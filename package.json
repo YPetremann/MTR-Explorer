@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . && tsc -b",
-    "preview": "vite preview"
+    "preview": "vite build --mode=development && vite preview"
   },
   "dependencies": {
     "@iconify/react": "^5.0.2",
@@ -32,7 +32,8 @@
     "vite": "^5.4.8",
     "vite-plugin-comlink": "^5.0.1",
     "vite-plugin-minify": "^2.0.0",
-    "vite-plugin-pwa": "^0.20.5"
+    "vite-plugin-pwa": "^0.20.5",
+    "vite-plugin-mkcert": "^1.17.6"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.3",
