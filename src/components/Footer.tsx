@@ -29,10 +29,10 @@ export function Footer() {
           target="_blank"
         >
           <span> CC BY-NC-SA 4.0 </span>
-          <Icon icon="ri:creative-commons-fill" className="ml-1 align-text-top text-xl" />
-          <Icon icon="ri:creative-commons-by-fill" className="ml-1 align-text-top text-xl" />
-          <Icon icon="ri:creative-commons-nc-fill" className="ml-1 align-text-top text-xl" />
-          <Icon icon="ri:creative-commons-sa-fill" className="ml-1 align-text-top text-xl" />
+          <Icon className="ml-1 align-text-top text-xl" icon="ri:creative-commons-fill" />
+          <Icon className="ml-1 align-text-top text-xl" icon="ri:creative-commons-by-fill" />
+          <Icon className="ml-1 align-text-top text-xl" icon="ri:creative-commons-nc-fill" />
+          <Icon className="ml-1 align-text-top text-xl" icon="ri:creative-commons-sa-fill" />
         </a>
       </p>
     </footer>
