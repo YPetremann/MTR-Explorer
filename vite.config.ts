@@ -28,7 +28,7 @@ export default defineConfig({
     comlink(),
     iconify({
       local: {
-        sets: ["mdi", "material-symbols"],
+        sets: ["mdi", "material-symbols","ri"],
         path: "iconify@{version}",
         copy: true,
       },
