@@ -9,6 +9,9 @@ import { useConfig } from "../contexts/config.ctx";
 import { useLock } from "../contexts/data.ctx";
 import { useProfile } from "../contexts/profile.ctx";
 
+// biome-ignore lint/correctness/noUndeclaredVariables: <explanation>
+const ref = __MTR_EXPLORER_VERSION__;
+
 export function ConfigPage() {
   useLock();
   const [config, setConfig] = useConfig();
@@ -131,15 +134,10 @@ export function ConfigPage() {
         <section className="flex flex-col gap-4">
           <h2 className="text-2xl">Informations</h2>
           <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-baseline">
-            <span className="min-w-[240px]">Version</span>
+            <span className="min-w-[240px]">Commit hash Version</span>
             <div className="flex grow flex-col items-stretch gap-4">
-              <a
-                href={`https://github.com/YPetremann/MTR-Explorer/commit/${__MTR_EXPLORER_VERSION__}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {/* biome-ignore lint/correctness/noUndeclaredVariables: <explanation> */}
-                {__MTR_EXPLORER_VERSION__}
+              <a href={`https://github.com/YPetremann/MTR-Explorer/commit/${ref}`} target="_blank" rel="noreferrer">
+                #{ref}
               </a>
             </div>
           </div>
