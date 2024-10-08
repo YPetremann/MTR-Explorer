@@ -1,13 +1,13 @@
 import React from "react";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
+import { Icon } from "../components/Icon";
 import { Input } from "../components/Input";
 import { Main } from "../components/Main";
 import { Select } from "../components/Select";
 import { useConfig } from "../contexts/config.ctx";
 import { useLock } from "../contexts/data.ctx";
 import { useProfile } from "../contexts/profile.ctx";
-import { Icon } from "../components/Icon";
 
 export function ConfigPage() {
   useLock();
