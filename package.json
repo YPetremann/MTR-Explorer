@@ -33,7 +33,8 @@
     "vite": "^5.4.8",
     "vite-plugin-comlink": "^5.0.1",
     "vite-plugin-minify": "^2.0.0",
-    "vite-plugin-pwa": "^0.20.5"
+    "vite-plugin-pwa": "^0.20.5",
+    "vite-plugin-version-mark": "^0.1.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.3",
@@ -52,8 +53,7 @@
     "typescript": "~5.5.2",
     "typescript-eslint": "^8.7.0",
     "vite-plugin-checker": "^0.8.0",
-    "vite-plugin-mkcert": "^1.17.6",
-    "vite-plugin-version-mark": "^0.1.0"
+    "vite-plugin-mkcert": "^1.17.6"
   },
   "overrides": {
     "jackspeak": "npm:dry-uninstall",
