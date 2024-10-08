@@ -128,6 +128,22 @@ export function ConfigPage() {
           </label>
         </section>
         */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-2xl">Informations</h2>
+          <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-baseline">
+            <span className="min-w-[240px]">Version</span>
+            <div className="flex grow flex-col items-stretch gap-4">
+              <a
+                href={`https://github.com/YPetremann/MTR-Explorer/commit/${__MTR_EXPLORER_VERSION__}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {/* biome-ignore lint/correctness/noUndeclaredVariables: <explanation> */}
+                {__MTR_EXPLORER_VERSION__}
+              </a>
+            </div>
+          </div>
+        </section>
       </Main>
     </>
   );

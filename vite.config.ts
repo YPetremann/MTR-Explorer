@@ -5,6 +5,8 @@ import iconify from "@tomjs/vite-plugin-iconify";
 import { VitePWA } from "vite-plugin-pwa";
 import { minimal2023Preset as preset } from "@vite-pwa/assets-generator/config";
 import { ViteMinifyPlugin } from "vite-plugin-minify";
+import { vitePluginVersionMark } from 'vite-plugin-version-mark'
+
 import fs from "fs";
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode, command,...args }) => {
@@ -23,6 +25,12 @@ export default defineConfig(async ({ mode, command,...args }) => {
     plugins: [
       react(),
       comlink(),
+      vitePluginVersionMark({
+        ifShortSHA: true,
+        ifLog: true,
+        ifMeta: true,
+        ifGlobal: true,
+      }),
       iconify({
         local: { sets: ["mdi", "material-symbols", "ri"], path: "iconify@{version}", copy: true },
       }),
