@@ -1,11 +1,12 @@
 class MixedContent {
   constructor(modules) {
-    this.key = this.constructor.name;
+    this.key = "MixedContent";
     this.modules = Object.values(modules)
-      .map(module => module[this.key])
+      .map(module => module.MixedContent)
       .filter(module => module)
       .map(module => new module())
       .sort((a, b) => a.order - b.order);
+    console.info(`${this.key} Strategies:`, this.modules.map(module => module.name).join(", "));
   }
   async fetch(url: string): string {
     for (const module of this.modules) {
