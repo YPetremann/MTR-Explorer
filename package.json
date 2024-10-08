@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . && tsc -b",
-    "preview": "vite build --mode=development && vite preview"
+    "preview": "vite build --mode=development && vite preview --mode=development"
   },
   "dependencies": {
     "@iconify/react": "^5.0.2",

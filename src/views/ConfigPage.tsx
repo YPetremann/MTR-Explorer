@@ -7,6 +7,7 @@ import { Select } from "../components/Select";
 import { useConfig } from "../contexts/config.ctx";
 import { useLock } from "../contexts/data.ctx";
 import { useProfile } from "../contexts/profile.ctx";
+import { Icon } from "../components/Icon";
 
 export function ConfigPage() {
   useLock();
@@ -29,7 +30,7 @@ export function ConfigPage() {
     <>
       <Header name="Config">
         <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-baseline">
             <span className="w-[240px]">Theme</span>
             <div className="flex grow">
               <Button
@@ -52,7 +53,7 @@ export function ConfigPage() {
               />
             </div>
           </div>
-          <label className="flex flex-wrap items-center gap-4" htmlFor="cfgProfile">
+          <label className="flex flex-col items-stretch gap-4 md:flex-row md:items-baseline" htmlFor="cfgProfile">
             <span className="w-[240px]">Profile</span>
             <div className="flex grow">
               <Select
@@ -79,15 +80,34 @@ export function ConfigPage() {
       <Main>
         <section className="flex flex-col gap-4">
           <h2 className="text-2xl">System map</h2>
-          <label className="flex flex-wrap items-center gap-4" htmlFor="cfgSMDurl">
-            <span className="w-[240px]">Data URL</span>
-            <div className="flex grow">
+          <label className="flex flex-col items-stretch gap-4 md:flex-row md:items-baseline" htmlFor="cfgSMDurl">
+            <span className="min-w-[240px]">Data URL</span>
+            <div className="flex grow flex-col items-stretch gap-4">
               <Input
                 className="grow"
                 id="cfgSMDurl"
                 onChange={ev => setSystemMapDataUrl(ev.target.value)}
                 value={systemMap?.dataUrl ?? ""}
               />
+              {`${systemMap?.dataUrl}`.trim().startsWith("http://") && (
+                <>
+                  <p className="text-yellow-500">
+                    <Icon icon="mdi:alert" />
+                    Warning: Insecure URL
+                  </p>
+                  <p>
+                    MTR Explorer can only load data from a https server
+                    <br />
+                    For that it will try to use a public proxy to fetch the data.
+                    <br />
+                    It will mostly not work if this is not a public URL.
+                  </p>
+                  <p>
+                    Server owners: To prevent usage of public proxy, you need to expose the system-map server in HTTPS
+                    using tools like Nginx, Apache or Cors-Anywhere.
+                  </p>
+                </>
+              )}
             </div>
           </label>
         </section>

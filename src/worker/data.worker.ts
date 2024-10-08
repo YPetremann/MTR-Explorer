@@ -1,5 +1,6 @@
 import type { RawData } from "../../definitions/data";
 import type { Data, Platform, Route, Segment, Station } from "../../definitions/worker";
+import { mixedContent } from "../solutions/mixedContent";
 //MARK:- VARS
 
 const workerData: Data = {
@@ -149,7 +150,9 @@ async function getDimensionsFromSource(source) {
     console.warn(err.message, url);
   }
   if (url instanceof URL) {
-    const res = await fetch(url.href);
+    const res = await mixedContent.fetch(url.href, {
+      referrerPolicy: "unsafe-url",
+    });
     return await res.json();
   }
   if (typeof url === "string") {
