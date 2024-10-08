@@ -27,7 +27,8 @@
         "useKeyWithClickEvents": "off"
       },
       "complexity": {
-        "all": true
+        "all": true,
+        "noStaticOnlyClass": "off"
       },
       "correctness": {
         "all": true,
@@ -67,6 +68,10 @@
       "javascript": {
         "globals": ["it", "describe", "expect"]
       }
+    },
+    {
+      "formatter": { "enabled": true },
+      "include": ["*.config.js", "*.json"]
     }
   ],
   "vcs": { "clientKind": "git", "defaultBranch": "main", "enabled": true, "useIgnoreFile": true }
