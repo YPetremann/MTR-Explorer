@@ -150,10 +150,7 @@ async function getDimensionsFromSource(source) {
     console.warn(err.message, url);
   }
   if (url instanceof URL) {
-    const res = await mixedContent.fetch(url.href, {
-      referrerPolicy: "unsafe-url",
-    });
-    return await res.json();
+    return await mixedContent.fetchJJson(url.href);
   }
   if (typeof url === "string") {
     return JSON.parse(url);
