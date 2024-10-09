@@ -3,7 +3,7 @@ import { AbstractProxyResponse } from "./AbstractProxyResponse";
 
 export class MixedContent extends AbstractMixedContent {
   readonly name = "codetabs.com";
-  readonly order = 10;
+  readonly order = 60;
   fetch(url: string): string {
     return fetch(`https://api.codetabs.com/v1/proxy/?quest=${url}`, {
       signal: AbortSignal.timeout(10000),
