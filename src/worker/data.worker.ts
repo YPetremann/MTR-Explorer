@@ -150,7 +150,7 @@ async function getDimensionsFromSource(source) {
     console.warn(err.message, url);
   }
   if (url instanceof URL) {
-    return await mixedContent.fetchJJson(url.href);
+    return await mixedContent.fetchJson(url.href);
   }
   if (typeof url === "string") {
     return JSON.parse(url);

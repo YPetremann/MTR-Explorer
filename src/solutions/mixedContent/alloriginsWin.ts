@@ -3,7 +3,7 @@ import { AbstractProxyResponse } from "./AbstractProxyResponse";
 
 export class MixedContent extends AbstractMixedContent {
   readonly name = "allorigins.win";
-  readonly order = 99;
+  readonly order = 50;
   fetch(url: string): string {
     return fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`).then(r => new ProxyResponse(r));
   }
@@ -11,11 +11,10 @@ export class MixedContent extends AbstractMixedContent {
 
 class ProxyResponse extends AbstractProxyResponse {
   async json() {
-    const provisional = await this.response.json();
-    return JSON.stringify(provisional.contents);
+    return JSON.parse(await this.text());
   }
   async text() {
-    const provisional = await this.response.json();
+    const provisional = JSON.parse(await this.response.text());
     return provisional.contents;
   }
 }
