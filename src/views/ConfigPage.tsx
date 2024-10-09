@@ -136,7 +136,7 @@ export function ConfigPage() {
           <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-baseline">
             <span className="min-w-[240px]">Commit hash Version</span>
             <div className="flex grow flex-col items-stretch gap-4">
-              <a href={`https://github.com/YPetremann/MTR-Explorer/commit/${ref}`} target="_blank" rel="noreferrer">
+              <a href={`https://github.com/YPetremann/MTR-Explorer/commit/${ref}`} rel="noreferrer" target="_blank">
                 #{ref}
               </a>
             </div>

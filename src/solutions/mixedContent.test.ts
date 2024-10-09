@@ -1,4 +1,4 @@
-import { test, describe, expect } from "vitest";
+import { describe, expect, test } from "vitest";
 import { MixedContent } from "./mixedContent";
 
 export const mixedContent = new MixedContent(import.meta.glob("./mixedContent/*.ts", { eager: true }));
@@ -10,9 +10,8 @@ describe.concurrent("MixedContent Strategy", () => {
       "$name",
       async strategy => {
         const body = await strategy.fetch(testUrl).then(res => res.text());
-        let data;
         try {
-          data = JSON.parse(body);
+          const data = JSON.parse(body);
           expect(data).toBeInstanceOf(Array);
           expect(data[0]).toHaveProperty("routes");
           expect(data[0]).toHaveProperty("stations");
