@@ -5,7 +5,9 @@ export class MixedContent extends AbstractMixedContent {
   readonly name = "allorigins.win";
   readonly order = 50;
   fetch(url: string): string {
-    return fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`).then(r => new ProxyResponse(r));
+    return fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`, {
+      signal: AbortSignal.timeout(10000),
+    }).then(r => new ProxyResponse(r));
   }
 }
 

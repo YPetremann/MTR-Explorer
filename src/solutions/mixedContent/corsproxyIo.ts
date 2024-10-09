@@ -5,7 +5,9 @@ export class MixedContent extends AbstractMixedContent {
   readonly name = "corsproxy.io";
   readonly order = 99;
   fetch(url: string): string {
-    return fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`).then(r => new ProxyResponse(r));
+    return fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`, {
+      signal: AbortSignal.timeout(10000),
+    }).then(r => new ProxyResponse(r));
   }
 }
 
